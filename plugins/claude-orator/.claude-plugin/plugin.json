@@ -1,6 +1,6 @@
 {
   "name": "claude-orator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Prompt rhetoric coach — optimize prompts before dispatching subagents",
   "author": { "name": "vvkmnn" },
   "repository": "https://github.com/Vvkmnn/claude-emporium",

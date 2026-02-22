@@ -1,6 +1,6 @@
 {
   "name": "claude-gladiator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Continuous learning hooks for gladiator MCP (observe patterns, reflect on them)",
   "author": { "name": "vvkmnn" },
   "repository": "https://github.com/Vvkmnn/claude-emporium",

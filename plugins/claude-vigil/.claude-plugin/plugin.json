@@ -1,6 +1,6 @@
 {
   "name": "claude-vigil",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "File checkpoint and recovery - save snapshots, diff changes, restore safely",
   "author": { "name": "vvkmnn" },
   "repository": "https://github.com/Vvkmnn/claude-emporium",
