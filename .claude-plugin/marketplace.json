@@ -1,8 +1,11 @@
 {
   "name": "claude-emporium",
-  "description": "Roma Victrix \u2014 @vvkmnn's plugin marketplace for Claude Code",
   "owner": {
     "name": "vvkmnn"
+  },
+  "metadata": {
+    "description": "Roma Victrix — @vvkmnn's plugin marketplace for Claude Code",
+    "version": "0.1.0"
   },
   "plugins": [
     {

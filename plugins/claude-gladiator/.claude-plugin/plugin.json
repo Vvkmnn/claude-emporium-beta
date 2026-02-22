@@ -10,7 +10,7 @@
   "mcpServers": {
     "gladiator": {
       "command": "npx",
-      "args": ["claude-gladiator-mcp"]
+      "args": ["claude-gladiator-mcp@beta"]
     }
   }
 }

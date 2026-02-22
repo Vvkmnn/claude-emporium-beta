@@ -44,25 +44,27 @@ Smithery Registry, Glama.ai, Official MCP Registry, npm Registry, GitHub marketp
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "suggest_siblings": false,
-    "claude-oracle": {
-      "search_before_plan": false,
-      "search_after_error": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-oracle": {
+        "hooks": {
+          "pre_planning": false,
+          "post_error": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `search_before_plan` | `true` | Search for relevant tools before planning |
-| `search_after_error` | `true` | Search for tools that solve errors |
-| `suggest_siblings` | `true` | Show install suggestions for sibling plugins (global) |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `pre_planning` | `true` | Search for relevant tools before planning |
+| `post_error` | `true` | Search for tools that solve errors |
 
 ## How It Works
 

@@ -5,7 +5,7 @@
  * Triggers: PostToolUse(Bash)
  * Only prompts when command failed (has error or non-zero exit).
  *
- * Settings: search_after_error (default: true)
+ * Settings: hooks.post_error (default: true)
  * Synergy: notes oracle will also search for tools that solve the error.
  */
 
@@ -16,7 +16,7 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-historian');
-  if (!settings.search_after_error) process.exit(0);
+  if (!settings.hooks.post_error) process.exit(0);
 
   const { tool_name, tool_output, error } = data;
 

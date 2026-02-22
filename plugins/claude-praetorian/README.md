@@ -37,29 +37,31 @@ claude mcp add praetorian -- npx claude-praetorian-mcp
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "suggest_siblings": false,
-    "claude-praetorian": {
-      "auto_compact_research": false,
-      "auto_compact_subagent": false,
-      "check_compactions_before_plan": false,
-      "remind_compact": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-praetorian": {
+        "hooks": {
+          "post_research": false,
+          "post_subagent": false,
+          "pre_plan": false,
+          "pre_compact": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `auto_compact_research` | `true` | Prompt to compact after web research |
-| `auto_compact_subagent` | `true` | Prompt to compact after subagent completes |
-| `check_compactions_before_plan` | `true` | List prior compactions before planning |
-| `remind_compact` | `true` | Remind to save context before compaction |
-| `suggest_siblings` | `true` | Show install suggestions for sibling plugins (global) |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `post_research` | `true` | Prompt to compact after web research |
+| `post_subagent` | `true` | Prompt to compact after subagent completes |
+| `pre_plan` | `true` | List prior compactions before planning |
+| `pre_compact` | `true` | Remind to save context before compaction |
 
 ## How It Works
 

@@ -16,30 +16,42 @@ const SETTINGS_PATH = path.join(os.homedir(), '.claude', 'settings.json');
 
 const DEFAULTS = {
   'claude-praetorian': {
-    auto_compact_research: true,
-    auto_compact_subagent: true,
-    check_compactions_before_plan: true,
-    remind_compact: true,
+    hooks: {
+      post_research: true,
+      post_subagent: true,
+      pre_plan: true,
+      pre_compact: true,
+    },
   },
   'claude-historian': {
-    search_before_web: true,
-    search_before_plan: true,
-    search_before_task: true,
-    search_after_error: true,
+    hooks: {
+      pre_websearch: true,
+      pre_planning: true,
+      pre_task: true,
+      post_error: true,
+    },
   },
   'claude-oracle': {
-    search_before_plan: true,
-    search_after_error: true,
+    hooks: {
+      pre_planning: true,
+      post_error: true,
+    },
   },
   'claude-gladiator': {
-    observe_after_failure: true,
-    reflect_before_stop: true,
+    hooks: {
+      post_error: true,
+      stop: true,
+    },
   },
   'claude-vigil': {
-    auto_quicksave: true,
+    hooks: {
+      pre_bash: true,
+    },
   },
   'claude-orator': {
-    optimize_subagent_prompts: true,
+    hooks: {
+      pre_task: true,
+    },
   },
 };
 
@@ -50,7 +62,8 @@ const DEFAULTS = {
 function readEmporiumSettings() {
   try {
     const json = JSON.parse(fs.readFileSync(SETTINGS_PATH, 'utf8'));
-    return json['claude-emporium'] || {};
+    const pluginSettings = json['pluginSettings'] || {};
+    return pluginSettings['claude-emporium'] || {};
   } catch {
     return {};
   }
@@ -64,7 +77,11 @@ function loadSettings(pluginName) {
   const defaults = DEFAULTS[pluginName] || {};
   const emporium = readEmporiumSettings();
   const overrides = emporium[pluginName] || {};
-  return { ...defaults, ...overrides };
+  return {
+    ...defaults,
+    ...overrides,
+    hooks: { ...(defaults.hooks || {}), ...(overrides.hooks || {}) },
+  };
 }
 
 /**

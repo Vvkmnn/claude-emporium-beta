@@ -10,7 +10,7 @@
   "mcpServers": {
     "orator": {
       "command": "npx",
-      "args": ["claude-orator-mcp"]
+      "args": ["claude-orator-mcp@beta"]
     }
   }
 }

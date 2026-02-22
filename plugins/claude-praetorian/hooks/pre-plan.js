@@ -24,7 +24,7 @@ if (!fs.existsSync(indexPath)) {
   await readStdin();
 
   const settings = loadSettings('claude-praetorian');
-  if (!settings.check_compactions_before_plan) process.exit(0);
+  if (!settings.hooks.pre_plan) process.exit(0);
 
   try {
     const index = JSON.parse(fs.readFileSync(indexPath, 'utf8'));

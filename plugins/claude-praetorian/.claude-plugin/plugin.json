@@ -18,7 +18,7 @@
     "praetorian": {
       "command": "npx",
       "args": [
-        "claude-praetorian-mcp"
+        "claude-praetorian-mcp@beta"
       ]
     }
   }

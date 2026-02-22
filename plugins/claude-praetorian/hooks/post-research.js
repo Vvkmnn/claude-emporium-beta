@@ -5,7 +5,7 @@
  * Triggers: PostToolUse(WebFetch|WebSearch)
  * Prompts Claude to use praetorian_compact() for web research findings.
  *
- * Settings: auto_compact_research (default: true)
+ * Settings: hooks.post_research (default: true)
  */
 
 const { readStdin, emit, loadSettings } = require('../../shared/utils');
@@ -15,7 +15,7 @@ const { readStdin, emit, loadSettings } = require('../../shared/utils');
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-praetorian');
-  if (!settings.auto_compact_research) process.exit(0);
+  if (!settings.hooks.post_research) process.exit(0);
 
   const { tool_name, error } = data;
   if (error) process.exit(0);

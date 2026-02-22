@@ -18,7 +18,7 @@
     "historian": {
       "command": "npx",
       "args": [
-        "claude-historian-mcp"
+        "claude-historian-mcp@beta"
       ]
     }
   }

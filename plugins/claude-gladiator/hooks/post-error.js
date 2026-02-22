@@ -6,7 +6,7 @@
  * Only prompts when tool failed (has error field or error pattern in output).
  * Silent on success — zero tokens.
  *
- * Settings: observe_after_failure (default: true)
+ * Settings: hooks.post_error (default: true)
  * Synergy: notes historian can search past solutions via get_error_solutions().
  */
 
@@ -26,7 +26,7 @@ const NOISE_PATTERNS = [
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-gladiator');
-  if (!settings.observe_after_failure) process.exit(0);
+  if (!settings.hooks.post_error) process.exit(0);
 
   const { tool_name, tool_input, tool_output, error } = data;
 

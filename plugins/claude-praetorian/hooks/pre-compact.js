@@ -14,7 +14,7 @@ const { readStdin, emit, loadSettings, siblings } = require('../../shared/utils'
   await readStdin();
 
   const settings = loadSettings('claude-praetorian');
-  if (!settings.remind_compact) process.exit(0);
+  if (!settings.hooks.pre_compact) process.exit(0);
 
   const peer = siblings();
   let synergy = '';

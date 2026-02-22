@@ -19,7 +19,7 @@
     "oracle": {
       "command": "npx",
       "args": [
-        "claude-oracle-mcp"
+        "claude-oracle-mcp@beta"
       ]
     }
   }

@@ -53,21 +53,25 @@ System prompts · XML tags · Chain of thought · Few-shot · Prefill · Long co
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "claude-orator": {
-      "optimize_subagent_prompts": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-orator": {
+        "hooks": {
+          "pre_task": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `optimize_subagent_prompts` | `true` | Auto-suggest optimization for under-specified subagent prompts |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `pre_task` | `true` | Suggest optimization for under-specified subagent prompts |
 
 ## How It Works
 

@@ -7,7 +7,7 @@
  * If none exist, approves silently (zero tokens).
  * Never blocks stop — decision is always "approve".
  *
- * Settings: reflect_before_stop (default: true)
+ * Settings: hooks.stop (default: true)
  * Synergy: suggests historian enrichment and oracle discovery during reflection.
  */
 
@@ -32,7 +32,7 @@ function approve(systemMessage) {
   await readStdin(); // drain stdin
 
   const settings = loadSettings('claude-gladiator');
-  if (!settings.reflect_before_stop) {
+  if (!settings.hooks.stop) {
     approve();
     process.exit(0);
   }

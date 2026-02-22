@@ -5,7 +5,7 @@
  * Triggers: PreToolUse(WebSearch|WebFetch)
  * Prompts Claude to check find_similar_queries() first.
  *
- * Settings: search_before_web (default: true)
+ * Settings: hooks.pre_websearch (default: true)
  * Synergy: notes praetorian will compact research findings after.
  */
 
@@ -17,7 +17,7 @@ const { readStdin, emit, loadSettings, siblings } = require('../../shared/utils'
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-historian');
-  if (!settings.search_before_web) process.exit(0);
+  if (!settings.hooks.pre_websearch) process.exit(0);
 
   const { tool_input } = data;
   let query = '';

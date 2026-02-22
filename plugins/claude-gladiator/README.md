@@ -39,25 +39,27 @@ claude mcp add gladiator -- npx claude-gladiator-mcp
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "suggest_siblings": false,
-    "claude-gladiator": {
-      "observe_after_failure": false,
-      "reflect_before_stop": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-gladiator": {
+        "hooks": {
+          "post_error": false,
+          "stop": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `observe_after_failure` | `true` | Observe tool failure patterns after errors |
-| `reflect_before_stop` | `true` | Prompt reflection before session ends |
-| `suggest_siblings` | `true` | Show install suggestions for sibling plugins (global) |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `post_error` | `true` | Observe tool failure patterns after errors |
+| `stop` | `true` | Prompt reflection before session ends |
 
 ## How It Works
 

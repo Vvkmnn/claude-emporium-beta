@@ -5,7 +5,7 @@
  * Triggers: PreToolUse(EnterPlanMode)
  * Prompts Claude to check search_plans() for past approaches.
  *
- * Settings: search_before_plan (default: true)
+ * Settings: hooks.pre_planning (default: true)
  * Synergy: notes oracle will search for tools, praetorian has compactions.
  */
 
@@ -16,7 +16,7 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
   await readStdin();
 
   const settings = loadSettings('claude-historian');
-  if (!settings.search_before_plan) process.exit(0);
+  if (!settings.hooks.pre_planning) process.exit(0);
 
   const project = path.basename(process.cwd());
 

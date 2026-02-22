@@ -5,7 +5,7 @@
  * Triggers: SubagentStop
  * Prompts Claude to compact subagent results as task_result.
  *
- * Settings: auto_compact_subagent (default: true)
+ * Settings: hooks.post_subagent (default: true)
  */
 
 const { readStdin, emit, loadSettings } = require('../../shared/utils');
@@ -14,7 +14,7 @@ const { readStdin, emit, loadSettings } = require('../../shared/utils');
   const data = await readStdin();
 
   const settings = loadSettings('claude-praetorian');
-  if (!settings.auto_compact_subagent) process.exit(0);
+  if (!settings.hooks.post_subagent) process.exit(0);
 
   let context = '';
   if (data) {

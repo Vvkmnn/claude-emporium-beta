@@ -5,7 +5,7 @@
  * Triggers: PreToolUse(Task)
  * Prompts Claude to check find_tool_patterns() for successful workflows.
  *
- * Settings: search_before_task (default: true)
+ * Settings: hooks.pre_task (default: true)
  */
 
 const path = require('path');
@@ -16,7 +16,7 @@ const { readStdin, emit, loadSettings } = require('../../shared/utils');
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-historian');
-  if (!settings.search_before_task) process.exit(0);
+  if (!settings.hooks.pre_task) process.exit(0);
 
   const { tool_input } = data;
   let agentType = '';

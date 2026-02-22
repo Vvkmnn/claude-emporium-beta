@@ -46,29 +46,31 @@ claude mcp add historian -- npx claude-historian-mcp
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "suggest_siblings": false,
-    "claude-historian": {
-      "search_before_web": false,
-      "search_before_plan": false,
-      "search_before_task": false,
-      "search_after_error": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-historian": {
+        "hooks": {
+          "pre_websearch": false,
+          "pre_planning": false,
+          "pre_task": false,
+          "post_error": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `search_before_web` | `true` | Check history before web research |
-| `search_before_plan` | `true` | Search past plans before planning |
-| `search_before_task` | `true` | Check tool patterns before launching agents |
-| `search_after_error` | `true` | Suggest error solutions after command failures |
-| `suggest_siblings` | `true` | Show install suggestions for sibling plugins (global) |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `pre_websearch` | `true` | Check history before web research |
+| `pre_planning` | `true` | Search past plans before planning |
+| `pre_task` | `true` | Check tool patterns before launching agents |
+| `post_error` | `true` | Suggest error solutions after command failures |
 
 ## How It Works
 

@@ -407,10 +407,12 @@ each hook script follows the same pattern:
   readStdin() → loadSettings() → siblings() → emit(<system-reminder>)
 
 runtime storage:
-  project/.claude/praetorian/   context snapshots
-  project/.claude/gladiator/    observations + reflections
-  project/.claude/vigil/        file checkpoints
-  ~/.claude/settings.json       enabledPlugins (auto) · claude-emporium (manual)
+  <your-project>/.claude/praetorian/  context snapshots
+  <your-project>/.claude/vigil/       file checkpoints
+  ~/.claude/gladiator/                observations + reflections
+
+  ~/.claude/settings.json             enabledPlugins — managed by /plugin install
+  ~/.claude/settings.json             pluginSettings.claude-emporium — user hook overrides
 ```
 
 **zero overhead, by design:**
@@ -441,41 +443,55 @@ runtime storage:
 }
 ```
 
-**Hook settings:** every hook checks a boolean setting before running. All default to `true`. To disable any hook, add overrides under the `claude-emporium` key in `~/.claude/settings.json`:
+**Hook settings:** every hook checks a boolean under `hooks` before running. Each key matches the hook filename. All default to `true`. To disable any hook, add overrides under `pluginSettings → claude-emporium` in `~/.claude/settings.json`:
 
 ```jsonc
 // ~/.claude/settings.json
 {
-  "claude-emporium": {
-    "suggest_siblings": false, // stop suggesting uninstalled emporium plugins
+  "pluginSettings": {
+    "claude-emporium": {
+      "suggest_siblings": false, // stop suggesting uninstalled emporium plugins
 
-    "claude-praetorian": {
-      "auto_compact_research": false, // don't prompt to compact after WebFetch/WebSearch
-      "auto_compact_subagent": false, // don't prompt to compact after subagent completes
-      "check_compactions_before_plan": false, // don't list prior compactions before planning
-      "remind_compact": false, // don't remind to compact before context reset
-    },
-    "claude-historian": {
-      "search_before_web": false, // don't check history before web research
-      "search_before_plan": false, // don't search past plans before planning
-      "search_before_task": false, // don't check tool patterns before launching agents
-      "search_after_error": false, // don't suggest error solutions after failures
-    },
-    "claude-oracle": {
-      "search_before_plan": false, // don't search for relevant tools before planning
-      "search_after_error": false, // don't search for tools that solve errors
-    },
-    "claude-gladiator": {
-      "observe_after_failure": false, // don't record failure patterns
-      "reflect_before_stop": false, // don't prompt reflection at session end
-    },
-    "claude-vigil": {
-      "auto_quicksave": false, // don't quicksave before destructive commands
-    },
-    "claude-orator": {
-      "optimize_subagent_prompts": false, // don't suggest prompt optimization before Task
-    },
-  },
+      "claude-praetorian": {
+        "hooks": {
+          "post_research": false, // PostToolUse on WebSearch/WebFetch: suggest compacting
+          "post_subagent": false, // SubagentStop: suggest compacting subagent results
+          "pre_plan": false,      // PreToolUse on EnterPlanMode: list prior compactions
+          "pre_compact": false    // PreCompact: remind to save context before reset
+        }
+      },
+      "claude-historian": {
+        "hooks": {
+          "pre_websearch": false, // PreToolUse on WebSearch/WebFetch: check history first
+          "pre_planning": false,  // PreToolUse on EnterPlanMode: search past plans
+          "pre_task": false,      // PreToolUse on Task: check tool patterns
+          "post_error": false     // PostToolUse on Bash (failed): suggest past solutions
+        }
+      },
+      "claude-oracle": {
+        "hooks": {
+          "pre_planning": false,  // PreToolUse on EnterPlanMode: search 17 registries
+          "post_error": false     // PostToolUse on Bash (failed): find error-solving tools
+        }
+      },
+      "claude-gladiator": {
+        "hooks": {
+          "post_error": false,    // PostToolUse on Bash/Edit/Write (failed): observe pattern
+          "stop": false           // Stop: prompt reflection on observations
+        }
+      },
+      "claude-vigil": {
+        "hooks": {
+          "pre_bash": false       // PreToolUse on Bash: quicksave before rm/reset/checkout
+        }
+      },
+      "claude-orator": {
+        "hooks": {
+          "pre_task": false       // PreToolUse on Task: optimize vague subagent prompts
+        }
+      }
+    }
+  }
 }
 ```
 

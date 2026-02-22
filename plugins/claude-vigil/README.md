@@ -42,23 +42,25 @@ claude mcp add vigil -- npx claude-vigil-mcp
 
 ## Settings
 
-Configure in `~/.claude/settings.json` under `claude-emporium`:
+Configure in `~/.claude/settings.json` under `pluginSettings → claude-emporium`:
 
 ```json
 {
-  "claude-emporium": {
-    "suggest_siblings": false,
-    "claude-vigil": {
-      "auto_quicksave": false
+  "pluginSettings": {
+    "claude-emporium": {
+      "claude-vigil": {
+        "hooks": {
+          "pre_bash": false
+        }
+      }
     }
   }
 }
 ```
 
-| Key | Default | What It Controls |
-|-----|---------|-----------------|
-| `auto_quicksave` | `true` | Auto-quicksave before destructive bash commands |
-| `suggest_siblings` | `true` | Show install suggestions for sibling plugins (global) |
+| Hook | Default | What It Controls |
+|------|---------|-----------------|
+| `pre_bash` | `true` | Quicksave before destructive bash commands |
 
 ## How It Works
 

@@ -6,7 +6,7 @@
  * Heuristic check: skips well-structured prompts (XML tags, markdown headers, action verbs).
  * Never blocks — suggestion only.
  *
- * Settings: optimize_subagent_prompts (default: true)
+ * Settings: hooks.pre_task (default: true)
  */
 
 const { readStdin, emit, loadSettings } = require('../../shared/utils');
@@ -16,7 +16,7 @@ const { readStdin, emit, loadSettings } = require('../../shared/utils');
   if (!data) process.exit(0);
 
   const settings = loadSettings('claude-orator');
-  if (!settings.optimize_subagent_prompts) process.exit(0);
+  if (!settings.hooks.pre_task) process.exit(0);
 
   const prompt = data?.tool_input?.prompt;
   if (!prompt || prompt.length < 50) process.exit(0);

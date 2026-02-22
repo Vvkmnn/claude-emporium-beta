@@ -19,7 +19,7 @@ const DESTRUCTIVE = /\b(rm|rmdir|mv|sed\s+-i|perl\s+-i)\b|git\s+(checkout|reset|
   if (!input) process.exit(0);
 
   const settings = loadSettings('claude-vigil');
-  if (!settings.auto_quicksave) process.exit(0);
+  if (!settings.hooks.pre_bash) process.exit(0);
 
   const command = input?.tool_input?.command || '';
   if (!DESTRUCTIVE.test(command)) process.exit(0);
