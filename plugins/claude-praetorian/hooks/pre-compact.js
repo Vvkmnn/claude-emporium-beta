@@ -22,7 +22,7 @@ const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
     synergy += '\n🔮 [claude-oracle] is active — include any tool discoveries in the compaction.';
   }
 
-  emit(`⚜️ [claude-praetorian] Context compaction imminent - SAVE NOW.
+  const message = `⚜️ [claude-praetorian] Context compaction imminent - SAVE NOW.
 
 Call praetorian_compact() to preserve valuable work before context resets:
 - type: "decisions" for architectural choices and trade-offs
@@ -30,5 +30,7 @@ Call praetorian_compact() to preserve valuable work before context resets:
 - type: "task_result" for subagent findings and exploration results
 - type: "web_research" for API docs and external research
 
-Auto-merges with existing compactions of the same title.${synergy}`);
+Auto-merges with existing compactions of the same title.${synergy}`;
+
+  console.log(JSON.stringify({ decision: 'approve', systemMessage: message }));
 })();

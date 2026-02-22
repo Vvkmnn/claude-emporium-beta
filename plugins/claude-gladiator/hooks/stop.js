@@ -18,12 +18,10 @@ const { readStdin, loadSettings, shouldSuggestSiblings, siblings } = require('..
 
 const OBSERVATIONS_PATH = path.join(os.homedir(), '.claude', 'gladiator', 'observations.jsonl');
 
-function approve(systemMessage) {
+function approve(message) {
   const output = { decision: 'approve' };
-  if (systemMessage) {
-    output.hookSpecificOutput = {
-      additionalContext: `<system-reminder>${systemMessage}</system-reminder>`,
-    };
+  if (message) {
+    output.systemMessage = message;
   }
   console.log(JSON.stringify(output));
 }

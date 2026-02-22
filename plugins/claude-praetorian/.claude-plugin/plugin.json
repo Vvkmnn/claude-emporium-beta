@@ -1,6 +1,6 @@
 {
   "name": "claude-praetorian",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Automatic context preservation - saves 50-60% tokens across sessions",
   "author": {
     "name": "vvkmnn"

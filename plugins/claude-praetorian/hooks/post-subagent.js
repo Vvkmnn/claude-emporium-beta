@@ -31,8 +31,8 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
     }
   }
 
-  emit(`⚜️ [claude-praetorian] Subagent completed - compact findings.${context}
-
-praetorian_compact(type="task_result", title="<what was found>", key_insights=[...], refs=[...])
-Extract: findings, file:line refs, decisions made`);
+  console.log(JSON.stringify({
+    decision: 'approve',
+    systemMessage: `⚜️ [claude-praetorian] Subagent completed - compact findings.${context}\n\npraetorian_compact(type="task_result", title="<what was found>", key_insights=[...], refs=[...])\nExtract: findings, file:line refs, decisions made`,
+  }));
 })();
