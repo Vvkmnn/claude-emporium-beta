@@ -10,7 +10,7 @@
  * Synergy: notes praetorian if present.
  */
 
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 const DESTRUCTIVE = /\b(rm|rmdir|mv|sed\s+-i|perl\s+-i)\b|git\s+(checkout|reset|clean|restore)\b|>\s*\S/;
 

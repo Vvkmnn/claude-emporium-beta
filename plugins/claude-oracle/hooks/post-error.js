@@ -9,7 +9,7 @@
  * Synergy: notes historian is also checking past solutions.
  */
 
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();

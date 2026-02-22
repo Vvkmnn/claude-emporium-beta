@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, timeAgo, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, timeAgo, siblings } = require('../lib/utils');
 
 const praetorianDir = path.join(process.cwd(), '.claude', 'praetorian');
 const indexPath = path.join(praetorianDir, 'index.json');

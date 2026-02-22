@@ -9,7 +9,7 @@
  * Synergy: notes oracle will also search for tools that solve the error.
  */
 
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();

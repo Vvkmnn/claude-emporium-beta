@@ -14,7 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
-const { readStdin, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 const OBSERVATIONS_PATH = path.join(os.homedir(), '.claude', 'gladiator', 'observations.jsonl');
 

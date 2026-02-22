@@ -10,7 +10,7 @@
  * Synergy: notes historian can search past solutions via get_error_solutions().
  */
 
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 // intentional no-match patterns — not real errors
 const NOISE_PATTERNS = [

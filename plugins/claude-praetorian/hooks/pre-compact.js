@@ -8,7 +8,7 @@
  * Synergy: reminds to include oracle discoveries if oracle is active.
  */
 
-const { readStdin, emit, loadSettings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
 
 (async () => {
   await readStdin();

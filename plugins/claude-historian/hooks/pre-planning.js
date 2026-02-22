@@ -10,7 +10,7 @@
  */
 
 const path = require('path');
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../../shared/utils');
+const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
 (async () => {
   await readStdin();
