@@ -30,6 +30,6 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
     emit(`⚜️ [claude-praetorian] Web research completed - compact findings.
 
 praetorian_compact(type="web_research", title="<topic>", key_insights=[...], refs=[...])
-${hint}`);
+${hint}`, 'PostToolUse');
   }
 })();

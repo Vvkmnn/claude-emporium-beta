@@ -43,5 +43,5 @@ Past plans may contain:
 - Implementation strategies that worked
 - Edge cases and gotchas discovered
 
-Token savings: ~300-800 tokens if similar work was done${synergy}`);
+Token savings: ~300-800 tokens if similar work was done${synergy}`, 'PreToolUse');
 })();

@@ -8,7 +8,7 @@
  * Settings: hooks.post_subagent (default: true)
  */
 
-const { readStdin, emit, loadSettings } = require('../lib/utils');
+const { readStdin, loadSettings, siblings, shouldSuggestSiblings } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();
@@ -31,8 +31,20 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
     }
   }
 
+  const peer = siblings();
+  const suggest = shouldSuggestSiblings();
+  let synergy = '';
+  if (peer.historian) {
+    synergy += '\n📜 [claude-historian] is active — search past agent patterns for comparison.';
+  }
+  if (peer.oracle) {
+    synergy += '\n🔮 [claude-oracle] is active — search for tools relevant to what was discovered.';
+  }
+  if (suggest && !peer.historian) {
+    synergy += '\n📜 [claude-historian] could search past agent patterns → /install claude-historian@claude-emporium';
+  }
+
   console.log(JSON.stringify({
-    decision: 'approve',
-    systemMessage: `⚜️ [claude-praetorian] Subagent completed - compact findings.${context}\n\npraetorian_compact(type="task_result", title="<what was found>", key_insights=[...], refs=[...])\nExtract: findings, file:line refs, decisions made`,
+    systemMessage: `⚜️ [claude-praetorian] Subagent completed - compact findings.${context}\n\npraetorian_compact(type="task_result", title="<what was found>", key_insights=[...], refs=[...])\nExtract: findings, file:line refs, decisions made${synergy}`,
   }));
 })();

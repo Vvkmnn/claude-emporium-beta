@@ -37,5 +37,5 @@ const DESTRUCTIVE = /\b(rm|rmdir|mv|sed\s+-i|perl\s+-i)\b|git\s+(checkout|reset|
 
 vigil_save(name: "~quicksave")
 
-Save affected files before: ${command.slice(0, 80)}${command.length > 80 ? '...' : ''}${synergy}`);
+Save affected files before: ${command.slice(0, 80)}${command.length > 80 ? '...' : ''}${synergy}`, 'PreToolUse');
 })();

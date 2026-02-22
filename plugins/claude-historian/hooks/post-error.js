@@ -11,6 +11,15 @@
 
 const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
+// intentional no-match patterns — not real errors
+const NOISE_PATTERNS = [
+  /\bgrep\b.*exit code 1/i,
+  /\brg\b.*exit code 1/i,
+  /\bfind\b.*exit code 1/i,
+  /\btest\b.*exit code 1/i,
+  /No files? matched/i,
+];
+
 (async () => {
   const data = await readStdin();
   if (!data) process.exit(0);
@@ -29,6 +38,11 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
     ));
 
   if (!hasError) process.exit(0);
+
+  // skip intentional no-match patterns (grep/find returning exit 1)
+  const errorStr = error ? (typeof error === 'string' ? error : JSON.stringify(error)) : '';
+  const combined = `${errorStr} ${tool_output || ''}`;
+  if (NOISE_PATTERNS.some(p => p.test(combined))) process.exit(0);
 
   let errorPattern = '';
   if (error) {
@@ -57,5 +71,5 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
 mcp__claude-historian-mcp__get_error_solutions(error_pattern="${displayError}", limit=3)
 
 Error: ${displayError}${errorPattern.length > 80 ? '...' : ''}
-Past solutions may have: root cause, fix applied, workarounds tried${synergy}`);
+Past solutions may have: root cause, fix applied, workarounds tried${synergy}`, 'PostToolUse');
 })();

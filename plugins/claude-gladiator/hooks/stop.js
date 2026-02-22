@@ -19,10 +19,8 @@ const { readStdin, loadSettings, shouldSuggestSiblings, siblings } = require('..
 const OBSERVATIONS_PATH = path.join(os.homedir(), '.claude', 'gladiator', 'observations.jsonl');
 
 function approve(message) {
-  const output = { decision: 'approve' };
-  if (message) {
-    output.systemMessage = message;
-  }
+  const output = {};
+  if (message) output.systemMessage = message;
   console.log(JSON.stringify(output));
 }
 

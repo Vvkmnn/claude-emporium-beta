@@ -91,5 +91,5 @@ gladiator_observe(
   tags=["error", "${tool_name.toLowerCase()}"]
 )
 
-Error: ${displayError}${errorPattern.length > 120 ? '...' : ''}${synergy}`);
+Error: ${displayError}${errorPattern.length > 120 ? '...' : ''}${synergy}`, 'PostToolUse');
 })();

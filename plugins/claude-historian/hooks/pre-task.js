@@ -9,7 +9,7 @@
  */
 
 const path = require('path');
-const { readStdin, emit, loadSettings } = require('../lib/utils');
+const { readStdin, emit, loadSettings, siblings, shouldSuggestSiblings } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();
@@ -33,10 +33,23 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
       ? `Task: "${description.substring(0, 40)}..."`
       : `Project: ${project}`;
 
+  const peer = siblings();
+  const suggest = shouldSuggestSiblings();
+  let synergy = '';
+  if (peer.praetorian) {
+    synergy += '\n⚜️ [claude-praetorian] is active — check praetorian_restore() for saved context from similar agent work.';
+  }
+  if (peer.oracle) {
+    synergy += '\n🔮 [claude-oracle] is active — search for specialized agent types or tools.';
+  }
+  if (suggest && !peer.praetorian) {
+    synergy += '\n⚜️ [claude-praetorian] could save agent findings across sessions → /install claude-praetorian@claude-emporium';
+  }
+
   emit(`📜 [claude-historian] Before launching agent, check what worked before.
 
 mcp__claude-historian-mcp__find_tool_patterns(tool_name="${agentType || 'Task'}", limit=5)
 
 ${hint}
-Past patterns show: successful tool sequences, effective prompts, approaches that worked`);
+Past patterns show: successful tool sequences, effective prompts, approaches that worked${synergy}`, 'PreToolUse');
 })();

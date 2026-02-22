@@ -32,5 +32,5 @@ Call praetorian_compact() to preserve valuable work before context resets:
 
 Auto-merges with existing compactions of the same title.${synergy}`;
 
-  console.log(JSON.stringify({ decision: 'approve', systemMessage: message }));
+  console.log(JSON.stringify({ systemMessage: message }));
 })();

@@ -41,5 +41,5 @@ const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
 mcp__claude-historian-mcp__find_similar_queries(query="${query || project}", limit=3)
 
 ${hint}
-Token savings: ~200-500 tokens if already answered${synergy}`);
+Token savings: ~200-500 tokens if already answered${synergy}`, 'PreToolUse');
 })();

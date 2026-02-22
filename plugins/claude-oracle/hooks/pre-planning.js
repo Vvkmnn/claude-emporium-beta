@@ -43,5 +43,5 @@ The oracle searches 17 sources (Smithery, npm, awesome lists, etc.) for:
 - Plugins that automate workflows
 - MCP servers that provide capabilities
 
-If relevant tools are found, consider installing them before proceeding.${synergy}`);
+If relevant tools are found, consider installing them before proceeding.${synergy}`, 'PreToolUse');
 })();

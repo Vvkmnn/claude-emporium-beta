@@ -30,5 +30,5 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
 
 mcp__claude-orator-mcp__orator_optimize(prompt="${prompt.substring(0, 80)}...")
 
-Scores clarity, specificity, structure, context, examples, constraints, and tone on a 1-10 scale. Returns restructured prompt with applied techniques.`);
+Scores clarity, specificity, structure, context, examples, constraints, and tone on a 1-10 scale. Returns restructured prompt with applied techniques.`, 'PreToolUse');
 })();

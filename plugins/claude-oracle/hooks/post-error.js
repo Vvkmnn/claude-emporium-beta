@@ -11,6 +11,15 @@
 
 const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
 
+// intentional no-match patterns — not real errors
+const NOISE_PATTERNS = [
+  /\bgrep\b.*exit code 1/i,
+  /\brg\b.*exit code 1/i,
+  /\bfind\b.*exit code 1/i,
+  /\btest\b.*exit code 1/i,
+  /No files? matched/i,
+];
+
 (async () => {
   const data = await readStdin();
   if (!data) process.exit(0);
@@ -29,6 +38,11 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
     ));
 
   if (!hasError) process.exit(0);
+
+  // skip intentional no-match patterns (grep/rg/find/test exit 1)
+  const errorStr = error ? (typeof error === 'string' ? error : JSON.stringify(error)) : '';
+  const combined = `${errorStr} ${tool_output || ''}`;
+  if (NOISE_PATTERNS.some(p => p.test(combined))) process.exit(0);
 
   let errorPattern = '';
   if (error) {
@@ -57,5 +71,5 @@ const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = requi
 mcp__claude-oracle-mcp__search(query="${displayError}", type="all", limit=3)
 
 Error: ${displayError}${errorPattern.length > 80 ? '...' : ''}
-The oracle may find MCP servers, plugins, or skills that solve this class of problem.${synergy}`);
+The oracle may find MCP servers, plugins, or skills that solve this class of problem.${synergy}`, 'PostToolUse');
 })();

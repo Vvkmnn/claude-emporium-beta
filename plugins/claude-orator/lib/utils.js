@@ -5,9 +5,8 @@
  * - Synergy: detect sibling plugins via ~/.claude/settings.json → enabledPlugins
  * - I/O: stdin helper for hook scripts
  *
- * NOTE: This file is duplicated into each plugin's lib/ directory so plugins
- * are self-contained when installed via the plugin cache. The canonical source
- * is plugins/shared/utils.js — keep all copies in sync.
+ * Each plugin has its own lib/utils.js for cache isolation.
+ * Plugins must be self-contained — no cross-directory requires.
  */
 
 const fs = require('fs');
@@ -158,14 +157,25 @@ function readStdin() {
 }
 
 /**
- * Emit hook output with additionalContext.
+ * Emit hook output in the correct format for the event type.
+ *
+ * PreToolUse/PostToolUse → hookSpecificOutput with hookEventName + additionalContext
+ * Stop/SubagentStop/PreCompact → systemMessage (no hookSpecificOutput)
  */
-function emit(message) {
-  console.log(JSON.stringify({
-    hookSpecificOutput: {
+function emit(message, hookEventName) {
+  const output = {};
+  if (hookEventName === 'PreToolUse' || hookEventName === 'PostToolUse') {
+    output.hookSpecificOutput = {
+      hookEventName,
       additionalContext: `<system-reminder>${message}</system-reminder>`,
-    },
-  }));
+    };
+    if (hookEventName === 'PreToolUse') {
+      output.hookSpecificOutput.permissionDecision = 'allow';
+    }
+  } else {
+    output.systemMessage = message;
+  }
+  console.log(JSON.stringify(output));
 }
 
 /**
