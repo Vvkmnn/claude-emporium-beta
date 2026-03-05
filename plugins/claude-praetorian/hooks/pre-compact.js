@@ -1,36 +1,18 @@
 #!/usr/bin/env node
 /**
- * Pre-Compact Hook - Save context before compaction resets it
+ * Pre-Compact Hook — merge nudge
  *
- * Triggers: PreCompact (fires before Claude's auto-compaction)
- * This is the critical hook that prevents context loss.
- *
- * Synergy: reminds to include oracle discoveries if oracle is active.
+ * Fires before any praetorian_compact call.
+ * Reminds Claude to reuse existing compaction titles to merge, not create duplicates.
  */
 
-const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
+const { readStdin, emit, loadSettings } = require('../lib/utils');
 
 (async () => {
-  await readStdin();
+  await readStdin(); // drain stdin
 
   const settings = loadSettings('claude-praetorian');
-  if (!settings.hooks.pre_compact) process.exit(0);
+  if (!settings.hooks?.pre_compact) process.exit(0);
 
-  const peer = siblings();
-  let synergy = '';
-  if (peer.oracle) {
-    synergy += '\n🔮 [claude-oracle] is active — include any tool discoveries in the compaction.';
-  }
-
-  const message = `⚜️ [claude-praetorian] Context compaction imminent - SAVE NOW.
-
-Call praetorian_compact() to preserve valuable work before context resets:
-- type: "decisions" for architectural choices and trade-offs
-- type: "file_reads" for codebase patterns and key file locations
-- type: "task_result" for subagent findings and exploration results
-- type: "web_research" for API docs and external research
-
-Auto-merges with existing compactions of the same title.${synergy}`;
-
-  console.log(JSON.stringify({ systemMessage: message }));
+  emit(`⚜️ Update existing compactions by reusing their title. Only create new if topic is genuinely different.`, 'PreCompact');
 })();

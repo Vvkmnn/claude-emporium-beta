@@ -20,9 +20,8 @@ const SETTINGS_PATH = path.join(os.homedir(), '.claude', 'settings.json');
 const DEFAULTS = {
   'claude-praetorian': {
     hooks: {
-      post_research: true,
-      post_subagent: true,
-      pre_plan: true,
+      pre_tool_use: true,
+      post_tool_use: true,
       pre_compact: true,
     },
   },
@@ -164,7 +163,7 @@ function readStdin() {
  */
 function emit(message, hookEventName) {
   const output = {};
-  if (hookEventName === 'PreToolUse' || hookEventName === 'PostToolUse') {
+  if (hookEventName === 'PreToolUse' || hookEventName === 'PostToolUse' || hookEventName === 'PostToolUseFailure') {
     output.hookSpecificOutput = {
       hookEventName,
       additionalContext: `<system-reminder>${message}</system-reminder>`,

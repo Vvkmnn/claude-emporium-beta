@@ -1,12 +1,28 @@
 {
   "hooks": {
     "PreToolUse": [{
-      "matcher": "EnterPlanMode",
+      "matcher": "Task|WebSearch|WebFetch",
       "hooks": [{
         "type": "command",
-        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-plan.js"
+        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-tool-use.js"
       }],
-      "description": "Check for prior compactions before planning"
+      "description": "Nudge to check compactions before subagents and research"
+    }],
+    "PostToolUse": [{
+      "matcher": "WebFetch|WebSearch",
+      "hooks": [{
+        "type": "command",
+        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.js"
+      }],
+      "description": "Nudge to update existing compactions after research"
+    }],
+    "SubagentStop": [{
+      "matcher": "*",
+      "hooks": [{
+        "type": "command",
+        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-use.js"
+      }],
+      "description": "Nudge to update existing compactions after subagent work"
     }],
     "PreCompact": [{
       "matcher": "*",
@@ -14,23 +30,7 @@
         "type": "command",
         "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-compact.js"
       }],
-      "description": "Save context before compaction resets it"
-    }],
-    "PostToolUse": [{
-      "matcher": "WebFetch|WebSearch",
-      "hooks": [{
-        "type": "command",
-        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-research.js"
-      }],
-      "description": "Compact after web research"
-    }],
-    "SubagentStop": [{
-      "matcher": "*",
-      "hooks": [{
-        "type": "command",
-        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-subagent.js"
-      }],
-      "description": "Compact subagent findings when agent completes"
+      "description": "Remind to merge into existing compactions"
     }]
   }
 }
