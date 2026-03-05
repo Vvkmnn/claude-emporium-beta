@@ -1,7 +1,7 @@
 {
   "hooks": {
-    "PostToolUse": [{
-      "matcher": "Bash",
+    "PostToolUseFailure": [{
+      "matcher": "Bash|Edit",
       "hooks": [{ "type": "command", "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-error.js" }],
       "description": "Observe tool failure patterns (silent on success)"
     }],
