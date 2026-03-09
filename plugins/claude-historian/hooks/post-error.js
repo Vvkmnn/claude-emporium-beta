@@ -1,17 +1,13 @@
 #!/usr/bin/env node
 /**
- * Post-Error Hook - Suggest error solutions after Bash failures
+ * Post-Error Hook - Suggest past error solutions
  *
- * Triggers: PostToolUse(Bash)
- * Only prompts when command failed (has error or non-zero exit).
- *
- * Settings: hooks.post_error (default: true)
- * Synergy: notes oracle will also search for tools that solve the error.
+ * Triggers: PostToolUseFailure(Bash|Edit)
+ * Token cost: ~30 on error, 0 on noise (grep/find exit 1).
  */
 
-const { readStdin, emit, loadSettings, shouldSuggestSiblings, siblings } = require('../lib/utils');
+const { readStdin, emit, loadSettings } = require('../lib/utils');
 
-// intentional no-match patterns — not real errors
 const NOISE_PATTERNS = [
   /\bgrep\b.*exit code 1/i,
   /\brg\b.*exit code 1/i,
@@ -27,49 +23,14 @@ const NOISE_PATTERNS = [
   const settings = loadSettings('claude-historian');
   if (!settings.hooks.post_error) process.exit(0);
 
-  const { tool_name, tool_output, error } = data;
+  const { tool_name, tool_input, error } = data;
+  if (!error) process.exit(0);
 
-  if (tool_name !== 'Bash') process.exit(0);
-
-  const hasError = error ||
-    (tool_output && (
-      /error|Error|ERROR|failed|Failed|FAILED|exception|Exception/i.test(tool_output) ||
-      /exit code [1-9]|Exit: [1-9]|returned [1-9]/i.test(tool_output)
-    ));
-
-  if (!hasError) process.exit(0);
-
-  // skip intentional no-match patterns (grep/find returning exit 1)
-  const errorStr = error ? (typeof error === 'string' ? error : JSON.stringify(error)) : '';
-  const combined = `${errorStr} ${tool_output || ''}`;
+  const errorStr = typeof error === 'string' ? error : JSON.stringify(error);
+  const command = tool_input?.command || '';
+  const combined = `${errorStr} ${command}`;
   if (NOISE_PATTERNS.some(p => p.test(combined))) process.exit(0);
 
-  let errorPattern = '';
-  if (error) {
-    errorPattern = typeof error === 'string' ? error : JSON.stringify(error);
-  } else if (tool_output) {
-    const lines = tool_output.split('\n');
-    const errorLine = lines.find(l =>
-      /error|Error|ERROR|failed|Failed|exception|Exception/i.test(l)
-    );
-    errorPattern = errorLine || tool_output.substring(0, 100);
-  }
-
-  const displayError = errorPattern.substring(0, 80);
-
-  const peer = siblings();
-  const suggest = shouldSuggestSiblings();
-  let synergy = '';
-  if (peer.oracle) {
-    synergy = '\n🔮 [claude-oracle] is active — also searching for tools that solve this class of problem.';
-  } else if (suggest) {
-    synergy = '\n🔮 [claude-oracle] could search for tools that solve this class of error → /install claude-oracle@claude-emporium';
-  }
-
-  emit(`📜 [claude-historian] Command failed - check if you've solved this before.
-
-mcp__claude-historian-mcp__get_error_solutions(error_pattern="${displayError}", limit=3)
-
-Error: ${displayError}${errorPattern.length > 80 ? '...' : ''}
-Past solutions may have: root cause, fix applied, workarounds tried${synergy}`, 'PostToolUse');
+  const displayError = errorStr.substring(0, 80);
+  emit(`📜 Check search(query="${displayError}", scope="errors") for past fixes.`, 'PostToolUseFailure');
 })();

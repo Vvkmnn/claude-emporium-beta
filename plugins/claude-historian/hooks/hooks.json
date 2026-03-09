@@ -1,38 +1,20 @@
 {
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "WebSearch|WebFetch",
-        "hooks": [{
-          "type": "command",
-          "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-websearch.js"
-        }],
-        "description": "Check historian before web research"
-      },
-      {
-        "matcher": "EnterPlanMode",
-        "hooks": [{
-          "type": "command",
-          "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-planning.js"
-        }],
-        "description": "Check historian before planning mode"
-      },
-      {
-        "matcher": "Task",
-        "hooks": [{
-          "type": "command",
-          "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-task.js"
-        }],
-        "description": "Check historian before launching agents"
-      }
-    ],
-    "PostToolUse": [{
-      "matcher": "Bash",
+    "PreToolUse": [{
+      "matcher": "WebSearch|WebFetch",
+      "hooks": [{
+        "type": "command",
+        "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/pre-websearch.js"
+      }],
+      "description": "Check historian before web research"
+    }],
+    "PostToolUseFailure": [{
+      "matcher": "Bash|Edit",
       "hooks": [{
         "type": "command",
         "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-error.js"
       }],
-      "description": "Suggest error solutions after command failures"
+      "description": "Suggest past error solutions after tool failures"
     }]
   }
 }

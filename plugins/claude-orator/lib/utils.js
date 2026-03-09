@@ -164,7 +164,7 @@ function readStdin() {
  */
 function emit(message, hookEventName) {
   const output = {};
-  if (hookEventName === 'PreToolUse' || hookEventName === 'PostToolUse') {
+  if (hookEventName === 'PreToolUse' || hookEventName === 'PostToolUse' || hookEventName === 'PostToolUseFailure') {
     output.hookSpecificOutput = {
       hookEventName,
       additionalContext: `<system-reminder>${message}</system-reminder>`,

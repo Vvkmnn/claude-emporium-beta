@@ -3,14 +3,10 @@
  * Pre-WebSearch Hook - Check historian before web research
  *
  * Triggers: PreToolUse(WebSearch|WebFetch)
- * Prompts Claude to check find_similar_queries() first.
- *
- * Settings: hooks.pre_websearch (default: true)
- * Synergy: notes praetorian will compact research findings after.
+ * Token cost: ~30 per web call.
  */
 
-const path = require('path');
-const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
+const { readStdin, emit, loadSettings } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();
@@ -20,26 +16,7 @@ const { readStdin, emit, loadSettings, siblings } = require('../lib/utils');
   if (!settings.hooks.pre_websearch) process.exit(0);
 
   const { tool_input } = data;
-  let query = '';
-  if (tool_input) {
-    query = tool_input.query || tool_input.url || tool_input.prompt || '';
-  }
+  const query = tool_input?.query || tool_input?.url || tool_input?.prompt || '';
 
-  const project = path.basename(process.cwd());
-  const hint = query
-    ? `Query: "${query.substring(0, 50)}${query.length > 50 ? '...' : ''}"`
-    : `Project: ${project}`;
-
-  const peer = siblings();
-  let synergy = '';
-  if (peer.praetorian) {
-    synergy = '\n⚜️ [claude-praetorian] is active — findings will be compacted automatically after research.';
-  }
-
-  emit(`📜 [claude-historian] Before searching the web, check if you've researched this before.
-
-mcp__claude-historian-mcp__find_similar_queries(query="${query || project}", limit=3)
-
-${hint}
-Token savings: ~200-500 tokens if already answered${synergy}`, 'PreToolUse');
+  emit(`📜 Check search(query="${(query || 'topic').substring(0, 50)}", scope="similar") — may already have this.`, 'PreToolUse');
 })();
