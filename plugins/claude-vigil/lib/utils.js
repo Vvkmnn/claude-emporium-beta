@@ -105,6 +105,7 @@ const EMPORIUM_PLUGINS = {
   gladiator: 'claude-gladiator@claude-emporium',
   vigil: 'claude-vigil@claude-emporium',
   orator: 'claude-orator@claude-emporium',
+  augur: 'claude-augur@claude-emporium',
 };
 
 /**
@@ -135,6 +136,7 @@ function siblings() {
     gladiator: hasSibling('gladiator'),
     vigil: hasSibling('vigil'),
     orator: hasSibling('orator'),
+    augur: hasSibling('augur'),
   };
 }
 

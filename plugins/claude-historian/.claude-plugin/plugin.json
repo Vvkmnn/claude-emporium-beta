@@ -1,6 +1,6 @@
 {
   "name": "claude-historian",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Automatic history search - checks past sessions before web research, planning, and debugging",
   "author": {
     "name": "vvkmnn"

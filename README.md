@@ -18,7 +18,7 @@
 <p align="center">
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
 <a href="https://claude.ai/code"><img src="https://img.shields.io/badge/Claude_Code-D97757?logo=claude&logoColor=fff" alt="Claude Code"></a>
-<a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-6_servers-blue" alt="MCP"></a>
+<a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-7_servers-blue" alt="MCP"></a>
 <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white" alt="TypeScript"></a>
 <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/node-%3E%3D20-brightgreen" alt="Node.js"></a>
 </p>
@@ -31,6 +31,7 @@
 <a href="https://www.npmjs.com/package/claude-gladiator-mcp"><img src="https://img.shields.io/npm/v/claude-gladiator-mcp.svg?label=gladiator" alt="gladiator"></a>
 <a href="https://www.npmjs.com/package/claude-vigil-mcp"><img src="https://img.shields.io/npm/v/claude-vigil-mcp.svg?label=vigil" alt="vigil"></a>
 <a href="https://www.npmjs.com/package/claude-orator-mcp"><img src="https://img.shields.io/npm/v/claude-orator-mcp.svg?label=orator" alt="orator"></a>
+<a href="https://www.npmjs.com/package/claude-augur-mcp"><img src="https://img.shields.io/npm/v/claude-augur-mcp.svg?label=augur" alt="augur"></a>
 </p>
 
 <p align="center">
@@ -43,62 +44,61 @@
 
 ---
 
-Six plugins that wrap standalone MCP servers with automation hooks, commands, and skills. No code duplication: plugins tell claude _when_ to act, MCPs handle _how_.
+Seven plugins that wrap standalone MCP servers with automation hooks, commands, and skills. No code duplication: plugins tell claude _when_ to act, MCPs handle _how_.
 
 ```
-╔═╤═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╤═╗
-║ │                                                                                                                                           │ ║
-║ │ PLUGINS                                                                                                                                   │ ║
-║ │                                                                                                                                           │ ║
-║ │ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ │ ║
-║ │ │   PRAETORIAN       │ │   HISTORIAN        │ │   ORACLE           │ │   GLADIATOR        │ │   VIGIL            │ │   ORATOR           │ │ ║
-║ │ │ context guard      │ │ session memory     │ │ tool discovery     │ │ learn & adapt      │ │ file recovery      │ │ prompt rhetoric    │ │ ║
-║ │ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ │ ║
-║ │ │ hooks              │ │ hooks              │ │ hooks              │ │ hooks              │ │ hooks              │ │ hooks              │ │ ║
-║ │ │ · pre-plan         │ │ · pre-websearch    │ │ · pre-plan         │ │ · post-error       │ │ · pre-bash         │ │ · pre-task         │ │ ║
-║ │ │ · pre-compact      │ │ · pre-plan         │ │ · post-error       │ │ · stop             │ │                    │ │                    │ │ ║
-║ │ │ · post-research    │ │ · pre-task         │ │                    │ │                    │ │ commands           │ │ commands           │ │ ║
-║ │ │ · subagent-stop    │ │ · post-error       │ │ commands           │ │ commands           │ │ · /save-vigil      │ │ · /reprompt-       │ │ ║
-║ │ │                    │ │                    │ │ · /search-oracle   │ │ · /review-         │ │ · /restore-vigil   │ │   orator           │ │ ║
-║ │ │ commands           │ │ commands           │ │                    │ │   gladiator        │ │                    │ │                    │ │ ║
-║ │ │ · /compact-        │ │ · /search-         │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ │   praetorian       │ │   historian        │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ │ · /restore-        │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ │   praetorian       │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ │ ║
-║ │            │                      │                      │                      │                      │                      │           │ ║
-║ │            ▼                      ▼                      ▼                      ▼                      ▼                      ▼           │ ║
-║ │                                                                                                                                           │ ║
-║ │ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ │ ║
-║ │ │ praetorian-mcp     │ │ historian-mcp      │ │ oracle-mcp         │ │ gladiator-mcp      │ │ vigil-mcp          │ │ orator-mcp         │ │ ║
-║ │ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ │ ║
-║ │ │ save_context       │ │ search_convos      │ │ search             │ │ observe            │ │ vigil_save         │ │ orator_optimize    │ │ ║
-║ │ │ · snapshot before  │ │ · full-text across │ │ · query 17 sources │ │ · record patterns  │ │ · named checkpoint │ │ · score 7 dims     │ │ ║
-║ │ │   compaction       │ │   all sessions     │ │   in parallel      │ │                    │ │                    │ │ · apply 8 techs    │ │ ║
-║ │ │                    │ │                    │ │                    │ │ reflect            │ │ vigil_list         │ │ · restructure      │ │ ║
-║ │ │ restore_context    │ │ get_error_solns    │ │ browse             │ │ · cluster and      │ │ · show checkpoints │ │                    │ │ ║
-║ │ │ · load previous    │ │ · how errors were  │ │ · by category or   │ │   recommend        │ │                    │ │ ── ── ── ── ──     │ │ ║
-║ │ │   session state    │ │   resolved         │ │   popularity       │ │                    │ │ vigil_diff         │ │ dimensions:        │ │ ║
-║ │ │                    │ │                    │ │                    │ │ ── ── ── ── ──     │ │ · preview changes  │ │ clarity            │ │ ║
-║ │ │ search_compactns   │ │ find_similar       │ │ sources            │ │ storage:           │ │                    │ │ specificity        │ │ ║
-║ │ │ · find past saves  │ │ · related past     │ │ · list registries  │ │ .claude/           │ │ vigil_restore      │ │ structure          │ │ ║
-║ │ │                    │ │   questions        │ │   and status       │ │ gladiator/         │ │ · restore files    │ │ context            │ │ ║
-║ │ │ list_compactions   │ │                    │ │                    │ │                    │ │                    │ │ examples           │ │ ║
-║ │ │ · browse recent    │ │ find_file_context  │ │ ── ── ── ── ──     │ │                    │ │ vigil_delete       │ │ constraints        │ │ ║
-║ │ │   snapshots        │ │ · track changes    │ │ smithery · glama   │ │                    │ │ · remove checkpoint│ │ tone               │ │ ║
-║ │ │                    │ │                    │ │ npm · github       │ │                    │ │                    │ │                    │ │ ║
-║ │ │ ── ── ── ── ──     │ │ find_tool_pattns   │ │ awesome-mcp        │ │                    │ │ ── ── ── ── ──     │ │ ── ── ── ── ──     │ │ ║
-║ │ │ storage:           │ │ · agent workflows  │ │ mcp-registry       │ │                    │ │ storage:           │ │ in-memory          │ │ ║
-║ │ │ .claude/           │ │                    │ │ + 11 more          │ │                    │ │ .claude/           │ │ zero storage       │ │ ║
-║ │ │ praetorian/        │ │ search_plans       │ │                    │ │                    │ │ vigil/             │ │                    │ │ ║
-║ │ │                    │ │ · past plans       │ │ in-memory cache    │ │                    │ │                    │ │                    │ │ ║
-║ │ │                    │ │                    │ │ zero storage       │ │                    │ │                    │ │                    │ │ ║
-║ │ │                    │ │ list_recent        │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ │                    │ │ · recent sessions  │ │                    │ │                    │ │                    │ │                    │ │ ║
-║ │ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ │ ║
-║ │                                                                                                                                           │ ║
-║ │                                                                                                                               MCP SERVERS │ ║
-╚═╧═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╧═╝
+╔═╤══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╤═╗
+║ │                                                                                                                                                                  │ ║
+║ │ PLUGINS                                                                                                                                                          │ ║
+║ │                                                                                                                                                                  │ ║
+║ │ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ │ ║
+║ │ │   PRAETORIAN       │ │   HISTORIAN        │ │   ORACLE           │ │   GLADIATOR        │ │   VIGIL            │ │   ORATOR           │ │   AUGUR            │ │ ║
+║ │ │ context guard      │ │ session memory     │ │ tool discovery     │ │ learn & adapt      │ │ file recovery      │ │ prompt rhetoric    │ │ plan reasoning     │ │ ║
+║ │ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ │ ║
+║ │ │ hooks              │ │ hooks              │ │                    │ │ hooks              │ │ hooks              │ │ hooks              │ │ hooks              │ │ ║
+║ │ │ · pre-tool-use     │ │ · pre-websearch    │ │ skills             │ │ · post-error       │ │ · pre-bash         │ │ · pre-task         │ │ · post-plan        │ │ ║
+║ │ │ · post-tool-use    │ │ · post-error       │ │ · search-oracle    │ │ · stop             │ │                    │ │                    │ │                    │ │ ║
+║ │ │ · pre-compact      │ │                    │ │                    │ │                    │ │ skills             │ │ skills             │ │ skills             │ │ ║
+║ │ │                    │ │ skills             │ │                    │ │ skills             │ │ · save-vigil       │ │ · reprompt-        │ │ · explain-augur    │ │ ║
+║ │ │ skills             │ │ · search-          │ │                    │ │ · review-          │ │ · restore-vigil    │ │   orator           │ │                    │ │ ║
+║ │ │ · compact-         │ │   historian        │ │                    │ │   gladiator        │ │                    │ │                    │ │                    │ │ ║
+║ │ │   praetorian       │ │                    │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ │ · restore-         │ │                    │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ │   praetorian       │ │                    │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ │ ║
+║ │            │                      │                      │                      │                      │                      │                      │           │ ║
+║ │            ▼                      ▼                      ▼                      ▼                      ▼                      ▼                      ▼           │ ║
+║ │                                                                                                                                                                  │ ║
+║ │ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ ┌────────────────────┐ │ ║
+║ │ │ praetorian-mcp     │ │ historian-mcp      │ │ oracle-mcp         │ │ gladiator-mcp      │ │ vigil-mcp          │ │ orator-mcp         │ │ augur-mcp          │ │ ║
+║ │ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ ├────────────────────┤ │ ║
+║ │ │ compact            │ │ search_convos      │ │ search             │ │ observe            │ │ vigil_save         │ │ orator_optimize    │ │ augur_explain      │ │ ║
+║ │ │ · save context:    │ │ · full-text across │ │ · query 19 sources │ │ · record patterns  │ │ · named checkpoint │ │ · score 7 dims     │ │ · extract plan     │ │ ║
+║ │ │   research, flow,  │ │   all sessions     │ │   in parallel      │ │                    │ │                    │ │ · apply 8 techs    │ │   structure        │ │ ║
+║ │ │   decisions        │ │                    │ │                    │ │ reflect            │ │ vigil_list         │ │ · restructure      │ │ · return template  │ │ ║
+║ │ │                    │ │ get_error_solns    │ │ browse             │ │ · cluster and      │ │ · show checkpoints │ │                    │ │   with [FILL]      │ │ ║
+║ │ │ restore            │ │ · how errors were  │ │ · by category or   │ │   recommend        │ │                    │ │ ── ── ── ── ──     │ │                    │ │ ║
+║ │ │ · search or list   │ │   resolved         │ │   popularity       │ │                    │ │ vigil_diff         │ │ dimensions:        │ │ ── ── ── ── ──     │ │ ║
+║ │ │   compactions by   │ │                    │ │                    │ │ ── ── ── ── ──     │ │ · preview changes  │ │ clarity            │ │ template seeding:  │ │ ║
+║ │ │   query or type    │ │ find_similar       │ │ sources            │ │ storage:           │ │                    │ │ specificity        │ │ MCP pre-renders    │ │ ║
+║ │ │                    │ │ · related past     │ │ · list registries  │ │ .claude/           │ │ vigil_restore      │ │ structure          │ │ · header + purpose │ │ ║
+║ │ │ manage             │ │   questions        │ │   and status       │ │ gladiator/         │ │ · restore files    │ │ context            │ │ · progress counts  │ │ ║
+║ │ │ · storage health   │ │                    │ │                    │ │                    │ │                    │ │ examples           │ │ Claude fills       │ │ ║
+║ │ │ · prune stale      │ │ find_file_context  │ │ ── ── ── ── ──     │ │                    │ │ vigil_delete       │ │ constraints        │ │ · decisions        │ │ ║
+║ │ │                    │ │ · track changes    │ │ smithery · glama   │ │                    │ │ · remove checkpoint│ │ tone               │ │ · assumptions      │ │ ║
+║ │ │ ── ── ── ── ──     │ │                    │ │ npm · github       │ │                    │ │                    │ │                    │ │ · tradeoffs        │ │ ║
+║ │ │ storage:           │ │ find_tool_pattns   │ │ awesome-mcp        │ │                    │ │ ── ── ── ── ──     │ │ ── ── ── ── ──     │ │                    │ │ ║
+║ │ │ .claude/           │ │ · agent workflows  │ │ mcp-registry       │ │                    │ │ storage:           │ │ in-memory          │ │ ── ── ── ── ──     │ │ ║
+║ │ │ praetorian/        │ │                    │ │ + 11 more          │ │                    │ │ .claude/           │ │ zero storage       │ │ read-only          │ │ ║
+║ │ │                    │ │ search_plans       │ │                    │ │                    │ │ vigil/             │ │                    │ │ zero storage       │ │ ║
+║ │ │                    │ │ · past plans       │ │ in-memory cache    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ │                    │ │                    │ │ zero storage       │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ │                    │ │ list_recent        │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ │                    │ │ · recent sessions  │ │                    │ │                    │ │                    │ │                    │ │                    │ │ ║
+║ │ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ └────────────────────┘ │ ║
+║ │                                                                                                                                                                  │ ║
+║ │                                                                                                                                                      MCP SERVERS │ ║
+╚═╧══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╧═╝
 ```
 
 ## install
@@ -126,6 +126,7 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 /plugin install claude-gladiator@claude-emporium
 /plugin install claude-vigil@claude-emporium
 /plugin install claude-orator@claude-emporium
+/plugin install claude-augur@claude-emporium
 ```
 
 **MCP servers:**
@@ -140,6 +141,7 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 # claude mcp add gladiator -- npx claude-gladiator-mcp    # https://github.com/Vvkmnn/claude-gladiator-mcp
 # claude mcp add vigil -- npx claude-vigil-mcp            # https://github.com/Vvkmnn/claude-vigil-mcp
 # claude mcp add orator -- npx claude-orator-mcp          # https://github.com/Vvkmnn/claude-orator-mcp
+# claude mcp add augur -- npx claude-augur-mcp            # https://github.com/Vvkmnn/claude-augur-mcp
 ```
 
 ## plugins
@@ -163,13 +165,14 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 
 - `praetorian_compact` · save structured context: research, decisions, flow analysis
 - `praetorian_restore` · search or list recent compactions by query or type
+- `praetorian_manage` · check storage health, prune stale entries
 
 **hooks:**
 
-- `PreToolUse` on `EnterPlanMode` · lists prior compactions before planning
-- `PreCompact` on `*` · saves context before compaction resets it
+- `PreToolUse` on `Task` / `WebSearch` / `WebFetch` · nudges to check prior compactions before research or subagents
 - `PostToolUse` on `WebFetch` / `WebSearch` · prompts to compact research findings
 - `SubagentStop` on `*` · prompts to compact subagent results
+- `PreCompact` on `*` · reminds to merge into existing compactions before reset
 
 ---
 
@@ -202,9 +205,7 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 **hooks:**
 
 - `PreToolUse` on `WebSearch` / `WebFetch` · checks history before web research
-- `PreToolUse` on `EnterPlanMode` · searches past plans before planning
-- `PreToolUse` on `Task` · checks tool patterns before launching agents
-- `PostToolUse` on `Bash` · suggests error solutions after failures
+- `PostToolUseFailure` on `Bash` / `Edit` · suggests past error solutions after failures
 
 ---
 
@@ -212,7 +213,7 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 
 <a href="https://github.com/Vvkmnn/claude-oracle-mcp"><img src="logo/claude-oracle.svg" width="200" height="200" align="left" alt="oracle"></a>
 
-**Tool recommender**. Searches 17 sources in parallel to find relevant skills, plugins, and MCP servers.
+**Tool recommender**. Searches 19 sources in parallel to find relevant skills, plugins, and MCP servers.
 
 **mcp:** [`claude-oracle-mcp`](https://www.npmjs.com/package/claude-oracle-mcp) (smithery, glama, npm, github, awesome-mcp-servers, and more)
 
@@ -227,11 +228,6 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 - `search` · search by query with optional type and semantic filters
 - `browse` · browse by category or popularity
 - `sources` · show available data sources and their status
-
-**hooks:**
-
-- `PreToolUse` on `EnterPlanMode` · searches for relevant tools before planning
-- `PostToolUse` on `Bash` · searches for tools that solve errors
 
 ---
 
@@ -256,7 +252,7 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 
 **hooks:**
 
-- `PostToolUse` on `Bash` / `Edit` / `Write` · observes failure patterns (silent on success)
+- `PostToolUseFailure` on `Bash` / `Edit` · observes failure patterns (silent on success)
 - `Stop` on `*` · prompts reflection if unprocessed observations exist
 
 ---
@@ -312,6 +308,30 @@ Each plugin self-configures on install. MCP servers, hooks, commands, skills, an
 
 - `PreToolUse` on `Task` · suggests optimization for under-specified subagent prompts
 
+---
+
+<h3>augur</h3>
+
+<a href="https://github.com/Vvkmnn/claude-augur-mcp"><img src="logo/claude-augur.svg" width="200" height="200" align="left" alt="augur"></a>
+
+**Plan reader**. Surfaces Claude's reasoning chain as scannable inline abstracts with decisions, tradeoffs, and assumptions.
+
+**mcp:** [`claude-augur-mcp`](https://www.npmjs.com/package/claude-augur-mcp) (read-only, zero storage)
+
+<br clear="left"/>
+
+**skills:**
+
+- `claude-augur` - surface plan reasoning as inline abstract
+
+**tools:**
+
+- `augur_explain` - extract plan structure and return template for inline rendering
+
+**hooks:**
+
+- `PostToolUse` on `Write` / `Edit` - nudges `augur_explain` after plan file writes
+
 ## architecture
 
 Each plugin is a thin wrapper. hooks inject prompts that trigger MCP tools at high-impact moments. plugins contain no business logic: they tell claude _when_ to search, save, or restore. the MCP servers handle the actual work.
@@ -319,7 +339,7 @@ Each plugin is a thin wrapper. hooks inject prompts that trigger MCP tools at hi
 ```
 claude-emporium/
 ├── .claude-plugin/
-│   ├── marketplace.json                    plugin registry (6 plugins)
+│   ├── marketplace.json                    plugin registry (7 plugins)
 │   └── plugin.json                         root manifest
 │
 ├── plugins/
@@ -327,14 +347,14 @@ claude-emporium/
 │   │   ├── .claude-plugin/plugin.json      declares praetorian MCP server
 │   │   ├── hooks/
 │   │   │   ├── hooks.json                  hook event bindings
-│   │   │   ├── post-research.js            compact after WebSearch/WebFetch
-│   │   │   ├── post-subagent.js            compact after Task completes
-│   │   │   ├── pre-compact.js              remind to compact before context reset
-│   │   │   └── pre-plan.js                 list prior compactions before planning
+│   │   │   ├── pre-tool-use.js             nudge restore before Task/WebSearch/WebFetch
+│   │   │   ├── post-tool-use.js            compact after WebSearch/WebFetch + SubagentStop
+│   │   │   └── pre-compact.js              remind to merge before context reset
 │   │   ├── commands/
 │   │   │   ├── compact-praetorian.md       /compact
 │   │   │   └── restore-praetorian.md       /compact-status
 │   │   ├── skills/claude-praetorian/SKILL.md
+│   │   ├── lib/utils.js                    plugin-local settings, siblings, emit
 │   │   └── README.md
 │   │
 │   ├── claude-historian/                   session memory → historian-mcp
@@ -342,31 +362,28 @@ claude-emporium/
 │   │   ├── hooks/
 │   │   │   ├── hooks.json
 │   │   │   ├── pre-websearch.js            check history before web research
-│   │   │   ├── pre-planning.js             search past plans before planning
-│   │   │   ├── pre-task.js                 check tool patterns before agents
 │   │   │   └── post-error.js               suggest past error solutions
 │   │   ├── commands/search-historian.md    /history
 │   │   ├── skills/claude-historian/SKILL.md
+│   │   ├── lib/utils.js
 │   │   └── README.md
 │   │
 │   ├── claude-oracle/                      tool discovery → oracle-mcp
 │   │   ├── .claude-plugin/plugin.json      declares oracle MCP server
-│   │   ├── hooks/
-│   │   │   ├── hooks.json
-│   │   │   ├── pre-planning.js             search registries before planning
-│   │   │   └── post-error.js               find tools that solve errors
 │   │   ├── commands/search-oracle.md       /discover
 │   │   ├── skills/claude-oracle/SKILL.md
+│   │   ├── lib/utils.js
 │   │   └── README.md
 │   │
 │   ├── claude-gladiator/                   learn & adapt → gladiator-mcp
 │   │   ├── .claude-plugin/plugin.json      declares gladiator MCP server
 │   │   ├── hooks/
 │   │   │   ├── hooks.json
-│   │   │   ├── stop.js                     prompt reflection at session end
-│   │   │   └── post-error.js               observe failure patterns
+│   │   │   ├── post-error.js               observe failure patterns
+│   │   │   └── stop.js                     prompt reflection at session end
 │   │   ├── commands/review-gladiator.md    /observe · /reflect
 │   │   ├── skills/claude-gladiator/SKILL.md
+│   │   ├── lib/utils.js
 │   │   └── README.md
 │   │
 │   ├── claude-vigil/                       file recovery → vigil-mcp
@@ -378,6 +395,7 @@ claude-emporium/
 │   │   │   ├── save-vigil.md               /save
 │   │   │   └── restore-vigil.md            /restore · /snapshots
 │   │   ├── skills/claude-vigil/SKILL.md
+│   │   ├── lib/utils.js
 │   │   └── README.md
 │   │
 │   ├── claude-orator/                      prompt rhetoric → orator-mcp
@@ -387,13 +405,20 @@ claude-emporium/
 │   │   │   └── pre-task.js                 optimize prompts before subagents
 │   │   ├── commands/reprompt-orator.md     /optimize
 │   │   ├── skills/claude-orator/SKILL.md
+│   │   ├── lib/utils.js
 │   │   └── README.md
 │   │
-│   └── shared/
-│       └── utils.js                        loadSettings · siblings · readStdin · emit
+│   └── claude-augur/                       plan reasoning → augur-mcp
+│       ├── .claude-plugin/plugin.json      declares augur MCP server
+│       ├── hooks/
+│       │   ├── hooks.json
+│       │   └── post-plan.js                nudge augur_explain after plan writes
+│       ├── skills/claude-augur/SKILL.md
+│       ├── lib/utils.js
+│       └── README.md
 │
 ├── mcp/
-│   └── .mcp.json                           all 6 MCP servers (standalone install)
+│   └── .mcp.json                           all 7 MCP servers (standalone install)
 │
 ├── logo/                                   plugin SVG icons
 ├── .github/                                issue templates · PR template · CI workflows
@@ -405,6 +430,9 @@ each plugin.json declares its MCP server:
 
 each hook script follows the same pattern:
   readStdin() → loadSettings() → siblings() → emit(<system-reminder>)
+
+each plugin has its own lib/utils.js (self-contained, no cross-directory requires):
+  loadSettings() · hasSibling() · siblings() · readStdin() · emit()
 
 runtime storage:
   <your-project>/.claude/praetorian/  context snapshots
@@ -419,7 +447,7 @@ runtime storage:
 
 - no external API calls. no network requests from hooks or plugins
 - no background processes. hooks run inline and exit (~1ms each)
-- no databases. praetorian, gladiator, and vigil store to project-local dirs (`.claude/`). oracle, historian, and orator compute in-memory with TTL caching
+- no databases. praetorian, gladiator, and vigil store to project-local dirs (`.claude/`). oracle, historian, orator, and augur compute in-memory with zero storage
 - no dependencies beyond Node.js (ships with Claude Code)
 - all hook scripts are pure Node.js, single-purpose, and stateless
 - built for claude, by claude
@@ -454,29 +482,20 @@ runtime storage:
 
       "claude-praetorian": {
         "hooks": {
-          "post_research": false, // PostToolUse on WebSearch/WebFetch: suggest compacting
-          "post_subagent": false, // SubagentStop: suggest compacting subagent results
-          "pre_plan": false,      // PreToolUse on EnterPlanMode: list prior compactions
-          "pre_compact": false    // PreCompact: remind to save context before reset
+          "pre_tool_use": false,  // PreToolUse on Task/WebSearch/WebFetch: nudge restore
+          "post_tool_use": false, // PostToolUse on WebSearch/WebFetch: suggest compacting
+          "pre_compact": false    // PreCompact: remind to merge before context reset
         }
       },
       "claude-historian": {
         "hooks": {
           "pre_websearch": false, // PreToolUse on WebSearch/WebFetch: check history first
-          "pre_planning": false,  // PreToolUse on EnterPlanMode: search past plans
-          "pre_task": false,      // PreToolUse on Task: check tool patterns
-          "post_error": false     // PostToolUse on Bash (failed): suggest past solutions
-        }
-      },
-      "claude-oracle": {
-        "hooks": {
-          "pre_planning": false,  // PreToolUse on EnterPlanMode: search 17 registries
-          "post_error": false     // PostToolUse on Bash (failed): find error-solving tools
+          "post_error": false     // PostToolUseFailure on Bash/Edit: suggest past solutions
         }
       },
       "claude-gladiator": {
         "hooks": {
-          "post_error": false,    // PostToolUse on Bash/Edit/Write (failed): observe pattern
+          "post_error": false,    // PostToolUseFailure on Bash/Edit: observe pattern
           "stop": false           // Stop: prompt reflection on observations
         }
       },
@@ -488,6 +507,11 @@ runtime storage:
       "claude-orator": {
         "hooks": {
           "pre_task": false       // PreToolUse on Task: optimize vague subagent prompts
+        }
+      },
+      "claude-augur": {
+        "hooks": {
+          "post_plan": false      // PostToolUse on Write/Edit: nudge augur_explain for plans
         }
       }
     }
@@ -540,6 +564,7 @@ flowchart TD
     O["🔮<br/>ORACLE<br/>tool discovery"]:::crystal
     G["⚔️<br/>GLADIATOR<br/>learn & adapt"]:::steel
     R["🪶<br/>ORATOR<br/>prompt rhetoric"]:::quill
+    A["📐<br/>AUGUR<br/>plan reasoning"]:::compass
 
     P ----|"  plans & context  "| H
     V ----|"  quicksave  "| P
@@ -552,6 +577,8 @@ flowchart TD
     R ----|"  find tools  "| O
     R ----|"  observe techniques  "| G
     R ----|"  checkpoint  "| V
+    A ----|"  plan context  "| P
+    A ----|"  past plans  "| H
 
     classDef gold fill:#fff8e1,stroke:#f9a825,stroke-width:2px,color:#5d4037
     classDef scroll fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,color:#4e342e
@@ -559,25 +586,25 @@ flowchart TD
     classDef crystal fill:#f3e5f5,stroke:#8e24aa,stroke-width:2px,color:#4a148c
     classDef steel fill:#eceff1,stroke:#546e7a,stroke-width:2px,color:#263238
     classDef quill fill:#efebe9,stroke:#795548,stroke-width:2px,color:#3e2723
+    classDef compass fill:#e8eaf6,stroke:#3949ab,stroke-width:2px,color:#1a237e
 ```
 
 **Enhanced behaviors when siblings are detected:**
 
 | event    | plugin          | alone                            | with siblings                                 |
 | -------- | --------------- | -------------------------------- | --------------------------------------------- |
-| plan     | ⚜️ praetorian   | lists prior compactions          | + 📜 past plans, 🔮 finds tools               |
-| plan     | 📜 historian    | searches past plans              | + 🔮 also searches for tools                   |
-| plan     | 🔮 oracle       | searches 17 registries           | + 📜 past plans, ⚜️ compactions                |
-| compact  | ⚜️ praetorian   | snapshots context                | + 🔮 discoveries included                      |
-| error    | 📜 historian    | searches past solutions          | + 🔮 finds tools for this error class          |
-| error    | 🔮 oracle       | searches for error-solving tools | + 📜 checks past solutions                     |
-| error    | ⚔️ gladiator    | observes failure pattern         | + 📜 enriches with past solutions               |
-| research | 📜 historian    | checks history first             | + ⚜️ compacts findings after                    |
+| research | ⚜️ praetorian   | nudges restore before research   | + 📜 historian checks history first             |
+| research | 📜 historian    | checks history first             | + ⚜️ praetorian compacts findings after         |
+| research | ⚜️ praetorian   | prompts to compact findings      | + 📜 historian found related context             |
+| task     | ⚜️ praetorian   | nudges restore before subagent   | + 🪶 orator optimizes the prompt                |
+| task     | 🪶 orator       | optimizes vague prompts          | + ⚜️ praetorian has prior context                |
+| error    | ⚔️ gladiator    | observes failure pattern         | + 📜 historian enriches with past solutions      |
+| error    | 📜 historian    | suggests past error solutions    | + ⚔️ gladiator records for future learning       |
 | subagent | ⚜️ praetorian   | prompts to compact results       | + ⚔️ observes subagent outcome patterns         |
-| task     | 📜 historian    | checks tool patterns             | + 🔮 suggests tools for the task                |
-| task     | 🪶 orator       | optimizes vague prompts          | + 📜 searches past scored prompts               |
-| stop     | ⚔️ gladiator    | prompts reflection               | + 📜 and 🔮 deepen analysis                    |
+| compact  | ⚜️ praetorian   | reminds to merge context         | (standalone — fires before context reset)       |
+| stop     | ⚔️ gladiator    | prompts reflection               | + 📜 and ⚜️ deepen analysis                     |
 | bash     | 🏺 vigil        | quicksaves before destructive    | + ⚜️ preserves context alongside                |
+| plan     | 📐 augur        | surfaces reasoning inline        | + 📜 references past plan decisions              |
 
 Detection is automatic via one `fs.readFileSync` call (~1ms), and falls back gracefully to solo mode if settings are missing or siblings are not dedicated.
 

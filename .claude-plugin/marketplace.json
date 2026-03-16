@@ -32,7 +32,7 @@
     },
     {
       "name": "claude-oracle",
-      "description": "Automatic discovery of skills, plugins, and MCP servers across 17 sources",
+      "description": "Automatic discovery of skills, plugins, and MCP servers across 19 sources",
       "version": "1.0.0",
       "source": "./plugins/claude-oracle",
       "author": {
@@ -73,6 +73,17 @@
       },
       "category": "development",
       "homepage": "https://github.com/Vvkmnn/claude-emporium/tree/main/plugins/claude-orator"
+    },
+    {
+      "name": "claude-augur",
+      "description": "Plan reasoning — surface decisions, tradeoffs, and assumptions as scannable abstracts",
+      "version": "1.0.0",
+      "source": "./plugins/claude-augur",
+      "author": {
+        "name": "vvkmnn"
+      },
+      "category": "development",
+      "homepage": "https://github.com/Vvkmnn/claude-emporium/tree/main/plugins/claude-augur"
     }
   ]
 }

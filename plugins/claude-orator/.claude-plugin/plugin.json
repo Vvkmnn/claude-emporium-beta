@@ -1,16 +1,25 @@
 {
   "name": "claude-orator",
-  "version": "1.0.2",
-  "description": "Prompt rhetoric coach — optimize prompts before dispatching subagents",
-  "author": { "name": "vvkmnn" },
+  "version": "1.0.3",
+  "description": "Prompt rhetoric coach \u2014 optimize prompts before dispatching subagents",
+  "author": {
+    "name": "vvkmnn"
+  },
   "repository": "https://github.com/Vvkmnn/claude-emporium",
   "homepage": "https://github.com/Vvkmnn/claude-emporium/tree/main/plugins/claude-orator",
   "license": "MIT",
-  "keywords": ["prompt", "optimization", "rhetoric", "scoring"],
+  "keywords": [
+    "prompt",
+    "optimization",
+    "rhetoric",
+    "scoring"
+  ],
   "mcpServers": {
     "orator": {
       "command": "npx",
-      "args": ["claude-orator-mcp@beta"]
+      "args": [
+        "claude-orator-mcp@beta"
+      ]
     }
   }
 }

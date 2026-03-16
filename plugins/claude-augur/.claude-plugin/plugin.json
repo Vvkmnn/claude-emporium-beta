@@ -1,0 +1,25 @@
+{
+  "name": "claude-augur",
+  "version": "1.0.3",
+  "description": "Plan reasoning summaries - surfaces decisions, tradeoffs, and assumptions as inline abstracts",
+  "author": {
+    "name": "vvkmnn"
+  },
+  "repository": "https://github.com/Vvkmnn/claude-emporium",
+  "homepage": "https://github.com/Vvkmnn/claude-emporium/tree/main/plugins/claude-augur",
+  "license": "MIT",
+  "keywords": [
+    "plan",
+    "reasoning",
+    "summary",
+    "augur"
+  ],
+  "mcpServers": {
+    "augur": {
+      "command": "npx",
+      "args": [
+        "claude-augur-mcp@beta"
+      ]
+    }
+  }
+}

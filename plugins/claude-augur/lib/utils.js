@@ -1,12 +1,12 @@
 /**
  * Shared utilities for claude-emporium plugins.
  *
- * - Settings: global config via ~/.claude/settings.json → claude-emporium key
- * - Synergy: detect sibling plugins via ~/.claude/settings.json → enabledPlugins
+ * - Settings: global config via ~/.claude/settings.json -> claude-emporium key
+ * - Synergy: detect sibling plugins via ~/.claude/settings.json -> enabledPlugins
  * - I/O: stdin helper for hook scripts
  *
  * Each plugin has its own lib/utils.js for cache isolation.
- * Plugins must be self-contained — no cross-directory requires.
+ * Plugins must be self-contained -- no cross-directory requires.
  */
 
 const fs = require('fs');
@@ -56,6 +56,11 @@ const DEFAULTS = {
       pre_task: true,
     },
   },
+  'claude-augur': {
+    hooks: {
+      post_plan: true,
+    },
+  },
 };
 
 /**
@@ -73,7 +78,7 @@ function readEmporiumSettings() {
 }
 
 /**
- * Load settings for a plugin from ~/.claude/settings.json → claude-emporium → pluginName.
+ * Load settings for a plugin from ~/.claude/settings.json -> claude-emporium -> pluginName.
  * Returns defaults merged with user overrides.
  */
 function loadSettings(pluginName) {
@@ -110,7 +115,7 @@ const EMPORIUM_PLUGINS = {
 
 /**
  * Check if a sibling emporium plugin is enabled.
- * Reads ~/.claude/settings.json → enabledPlugins.
+ * Reads ~/.claude/settings.json -> enabledPlugins.
  */
 function hasSibling(name) {
   const key = EMPORIUM_PLUGINS[name];
@@ -161,8 +166,8 @@ function readStdin() {
 /**
  * Emit hook output in the correct format for the event type.
  *
- * PreToolUse/PostToolUse → hookSpecificOutput with hookEventName + additionalContext
- * Stop/SubagentStop/PreCompact → systemMessage (no hookSpecificOutput)
+ * PreToolUse/PostToolUse -> hookSpecificOutput with hookEventName + additionalContext
+ * Stop/SubagentStop/PreCompact -> systemMessage (no hookSpecificOutput)
  */
 function emit(message, hookEventName) {
   const output = {};
