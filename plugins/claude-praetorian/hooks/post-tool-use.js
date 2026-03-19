@@ -17,6 +17,8 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
   if (!settings.hooks?.post_tool_use) process.exit(0);
 
   const hookEvent = data.hook_event_name || 'PostToolUse';
-  const type = hookEvent === 'SubagentStop' ? 'task_result' : 'web_research';
-  emit(`⚜️ If findings are valuable, update existing compaction: praetorian_compact(type="${type}"). Reuse existing title to merge, or create new only if topic is genuinely different.`, hookEvent);
+  const isSubagent = hookEvent === 'SubagentStop';
+  const type = isSubagent ? 'task_result' : 'web_research';
+  const verb = isSubagent ? 'Subagent completed.' : 'Research done.';
+  emit(`⚜️ ${verb} Save key findings: praetorian_compact(type="${type}", title="<topic>"). Reuse title to merge.`, hookEvent);
 })();

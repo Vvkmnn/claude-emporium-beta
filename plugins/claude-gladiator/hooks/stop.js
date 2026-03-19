@@ -19,7 +19,6 @@ const OBSERVATIONS_PATH = path.join(os.homedir(), '.claude', 'gladiator', 'obser
 
   const settings = loadSettings('claude-gladiator');
   if (!settings.hooks.stop) {
-    console.log(JSON.stringify({}));
     process.exit(0);
   }
 
@@ -33,13 +32,9 @@ const OBSERVATIONS_PATH = path.join(os.homedir(), '.claude', 'gladiator', 'obser
         if (!obs.processed) unprocessed++;
       } catch { /* skip malformed */ }
     }
-  } catch {
-    console.log(JSON.stringify({}));
-    process.exit(0);
-  }
+  } catch { /* file missing = 0 unprocessed, fall through */ }
 
   if (unprocessed < 10) {
-    console.log(JSON.stringify({}));
     process.exit(0);
   }
 

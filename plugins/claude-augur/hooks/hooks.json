@@ -1,7 +1,7 @@
 {
   "hooks": {
     "PostToolUse": [{
-      "matcher": "Write|Edit",
+      "matcher": "Write",
       "hooks": [{ "type": "command", "command": "node ${CLAUDE_PLUGIN_ROOT}/hooks/post-plan.js" }],
       "description": "Nudge augur_explain after plan file writes"
     }]

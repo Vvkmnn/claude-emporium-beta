@@ -19,9 +19,10 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
   const prompt = data?.tool_input?.prompt;
   if (!prompt || prompt.length < 50) process.exit(0);
 
-  const hasStructure = /<\w+>/.test(prompt) || /^#{1,3}\s/m.test(prompt);
-  const hasVerb = /^(write|create|implement|analyze|extract|find|search|review|fix|debug)\b/i.test(prompt);
-  if (hasStructure || hasVerb) process.exit(0);
+  const hasXml = /<\w+>/.test(prompt);
+  const hasHeaders = /^#{1,3}\s/m.test(prompt);
+  const hasBullets = /^[-*]\s/m.test(prompt);
+  if (hasXml || (hasHeaders && hasBullets)) process.exit(0);
 
   emit(`🪶 Prompt lacks structure — run orator_optimize() before dispatching this agent.`, 'PreToolUse');
 })();

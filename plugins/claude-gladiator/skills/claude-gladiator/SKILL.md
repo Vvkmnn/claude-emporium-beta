@@ -12,8 +12,8 @@ Continuous learning. Observes tool failures and prompts reflection to evolve rul
 
 | Hook | When | Action |
 |------|------|--------|
-| **PostToolUseFailure(Bash/Edit)** | After tool failure | Observes the error pattern (silent on success) |
-| **Stop** | Session ending | Prompts reflection if >= 10 unprocessed observations |
+| **PostToolUseFailure(Bash/Edit)** | After tool failure | Nudges you to call `gladiator_observe()` — you must call it, not automatic |
+| **Stop** | Session ending | Prompts `gladiator_reflect()` if >= 10 unprocessed observations |
 
 ## Commands
 
@@ -23,9 +23,9 @@ Continuous learning. Observes tool failures and prompts reflection to evolve rul
 
 ## Workflows
 
-### Observe (automatic via hooks)
+### Observe (manual — hooks only nudge)
 
-Tool failures trigger observation automatically. After fixing an error, record what worked:
+After a tool failure, the hook nudges you. YOU must call `gladiator_observe()` — it is NOT automatic. After fixing an error, record what worked:
 
 ```
 gladiator_observe(

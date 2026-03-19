@@ -15,8 +15,8 @@ Hooks emit one-line nudges (~20 tokens each). No disk I/O. You judge relevance.
 | Hook | When It Fires | What It Says | Your Call |
 |------|--------------|--------------|-----------|
 | **PreToolUse** | Before Task, WebSearch, WebFetch | "Check restore — prior context may exist" | Restore if topic is familiar. Skip if clearly novel. |
-| **PostToolUse** | After WebFetch, WebSearch | "Update existing compaction if valuable" | Compact if findings are worth preserving. Skip routine. |
-| **SubagentStop** | After subagent completes | "Update existing compaction with results" | Compact if subagent produced reusable insights. |
+| **PostToolUse** | After WebFetch, WebSearch | "Save key findings" | Compact research results. Reuse title to merge. |
+| **SubagentStop** | After subagent completes | "Save key findings" | Compact subagent results. Don't let findings die with the agent. |
 | **PreCompact** | Before any compact call | "Reuse title to merge" | Always follow — prevents duplicate compactions. |
 
 ### Reading Hook Nudges
@@ -26,8 +26,8 @@ When you see `⚜️ Check praetorian_restore(query="...")`:
 2. Is the summary hit relevant? → Restore again with `detail="full"`
 3. Clearly novel topic? → Skip, proceed with research
 
-When you see `⚜️ If findings are valuable, update existing compaction`:
-1. Did you learn something genuinely new? → Compact with existing title to merge
+When you see `⚜️ Save key findings: praetorian_compact(...)`:
+1. Compact with existing title to merge — don't wait for "enough" findings
 2. Routine result, nothing novel? → Skip
 
 ## Workflow: restore → work → compact
@@ -42,7 +42,7 @@ praetorian_restore()                                    # recent compactions
 ```
 
 **Hooks handle:** PreToolUse nudges before Task/WebSearch/WebFetch.
-**You handle manually:** Before planning sessions, before architectural decisions, after `/clear`, when entering unfamiliar code areas.
+**You handle manually:** Before planning sessions, before launching subagents, at session start, after `/clear`.
 
 ### Phase 2: Work
 
@@ -57,7 +57,7 @@ praetorian_compact(type="web_research", title="auth JWT research",
 ```
 
 **Hooks handle:** PostToolUse nudges after WebSearch/WebFetch, SubagentStop nudges after agents.
-**You handle manually:** After multi-file exploration, after decisions hooks wouldn't catch, after flow analysis.
+**You handle manually:** After subagents return, after multi-file exploration, after solving a hard problem. Don't wait — compact incrementally.
 
 **Critical:** Always reuse an existing title to merge. Creating a new compaction costs 1 of 13 slots per project. Merging is free.
 

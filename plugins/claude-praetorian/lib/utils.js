@@ -25,36 +25,6 @@ const DEFAULTS = {
       pre_compact: true,
     },
   },
-  'claude-historian': {
-    hooks: {
-      pre_websearch: true,
-      pre_planning: true,
-      pre_task: true,
-      post_error: true,
-    },
-  },
-  'claude-oracle': {
-    hooks: {
-      pre_planning: true,
-      post_error: true,
-    },
-  },
-  'claude-gladiator': {
-    hooks: {
-      post_error: true,
-      stop: true,
-    },
-  },
-  'claude-vigil': {
-    hooks: {
-      pre_bash: true,
-    },
-  },
-  'claude-orator': {
-    hooks: {
-      pre_task: true,
-    },
-  },
 };
 
 /**

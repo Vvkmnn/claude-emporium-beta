@@ -6,7 +6,7 @@ arguments: query, type?
 
 # /search-oracle
 
-Search across 17 sources for relevant skills, plugins, and MCP servers.
+Search across 19 sources for relevant skills, plugins, and MCP servers.
 
 ## Usage
 

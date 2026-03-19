@@ -1,18 +1,18 @@
 ---
 name: claude-oracle
-description: Automatic tool discovery across 17 sources — INVOKE before planning to discover relevant skills, plugins, and MCP servers
+description: Automatic tool discovery across 19 sources — INVOKE before planning to discover relevant skills, plugins, and MCP servers
 triggers: []
 ---
 
 # Oracle Plugin
 
-Tool discovery. Searches 17 sources in parallel to find relevant skills, plugins, and MCP servers.
+Tool discovery. Searches 19 sources in parallel to find relevant skills, plugins, and MCP servers.
 
 ## Commands
 
 | Command | Description |
 |---------|-------------|
-| `/search-oracle <query> [type]` | Search for tools across all 17 sources |
+| `/search-oracle <query> [type]` | Search for tools across all 19 sources |
 
 ## Workflows
 
@@ -31,9 +31,9 @@ Discover relevant tools before entering plan mode:
 3. `sources()` — check data source status
 4. Install useful tools: skills, plugins, or MCP servers
 
-## Data Sources (17)
+## Data Sources (19)
 
-Smithery Registry, Glama.ai, Official MCP Registry, npm, GitHub marketplace plugins, awesome-mcp-servers, awesome-mcp-lists, awesome-claude-code (ccplugins), awesome-claude-code (jmanhype), awesome-agent-skills, Playbooks.com, SkillsMP, and more.
+Smithery Registry, Glama.ai, Official MCP Registry, npm Registry, GitHub marketplace plugins, GitHub search, web search, awesome-mcp-servers (wong2), awesome-mcp-lists, awesome-claude-code (ccplugins), awesome-claude-code (jmanhype), awesome-claude-code (collabnix), awesome-agent-skills, Playbooks.com, SkillsMP, and more.
 
 ## MCP Tools Reference
 
