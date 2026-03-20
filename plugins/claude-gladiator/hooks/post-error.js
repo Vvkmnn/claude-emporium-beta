@@ -6,7 +6,7 @@
  * Token cost: ~30 on error, 0 on noise (grep/find exit 1).
  */
 
-const { readStdin, emit, loadSettings, hasSibling } = require('../lib/utils');
+const { readStdin, emit, loadSettings } = require('../lib/utils');
 
 const NOISE_PATTERNS = [
   /\bgrep\b.*exit code 1/i,
@@ -28,7 +28,6 @@ const NOISE_PATTERNS = [
 
   const settings = loadSettings('claude-gladiator');
   if (!settings.hooks.post_error) process.exit(0);
-  if (hasSibling('historian')) process.exit(0);
 
   const { tool_name, tool_input, error } = data;
   if (!error) process.exit(0);

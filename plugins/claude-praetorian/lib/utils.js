@@ -23,6 +23,7 @@ const DEFAULTS = {
       pre_tool_use: true,
       post_tool_use: true,
       pre_compact: true,
+      stop: true,
     },
   },
 };
