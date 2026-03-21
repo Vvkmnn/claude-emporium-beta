@@ -20,5 +20,5 @@ const { readStdin, emit, loadSettings, hasSibling } = require('../lib/utils');
   const { tool_input } = data;
   const query = tool_input?.query || tool_input?.url || tool_input?.prompt || '';
 
-  emit(`📜 Check find_similar_queries(query="${(query || 'topic').substring(0, 50)}") — may already have this.`, 'PreToolUse');
+  emit(`📜 Check search(query="${(query || 'topic').substring(0, 50)}", scope="similar") — may already have this.`, 'PreToolUse');
 })();

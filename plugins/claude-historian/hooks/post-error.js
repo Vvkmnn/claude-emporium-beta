@@ -39,5 +39,5 @@ const NOISE_PATTERNS = [
   if (NOISE_PATTERNS.some(p => p.test(combined))) process.exit(0);
 
   const displayError = errorStr.substring(0, 80);
-  emit(`📜 Check get_error_solutions(query="${displayError}") for past fixes.`, 'PostToolUseFailure');
+  emit(`📜 Check search(query="${displayError}", scope="errors") for past fixes.`, 'PostToolUseFailure');
 })();

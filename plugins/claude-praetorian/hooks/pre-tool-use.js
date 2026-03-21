@@ -7,7 +7,7 @@
  * No disk I/O — just a one-line nudge (~20 tokens).
  */
 
-const { readStdin, emit, loadSettings } = require('../lib/utils');
+const { readStdin, emit, loadSettings, hasSibling } = require('../lib/utils');
 
 (async () => {
   const data = await readStdin();
@@ -21,9 +21,10 @@ const { readStdin, emit, loadSettings } = require('../lib/utils');
   if (!query || query.length < 10) process.exit(0);
 
   const topic = query.substring(0, 80);
+  const historianNote = hasSibling('historian') ? ` Also check search(query="${topic.substring(0, 40)}", scope="similar").` : '';
   if (tool_name === 'Task') {
-    emit(`⚜️ Check praetorian_restore(query="${topic}") — prior context may exist for this work.`, 'PreToolUse');
+    emit(`⚜️ Check praetorian_restore(query="${topic}") — prior context may exist.${historianNote}`, 'PreToolUse');
   } else {
-    emit(`⚜️ Check praetorian_restore(query="${topic}", type="web_research") — you may already know this.`, 'PreToolUse');
+    emit(`⚜️ Check praetorian_restore(query="${topic}", type="web_research") — you may already know this.${historianNote}`, 'PreToolUse');
   }
 })();

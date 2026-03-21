@@ -1,6 +1,6 @@
 ---
 name: claude-augur
-description: Use after writing or editing plan files to surface reasoning as a scannable inline abstract. Extracts decisions, risks, discoveries, and recommendations so the user can correct Claude's reasoning at a glance.
+description: Use after writing or editing a plan file, after exiting plan mode, or when asked "why did you choose this?" — surfaces decisions, risks, and blind spots before implementation.
 ---
 
 # Claude Augur

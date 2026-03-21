@@ -16,7 +16,7 @@ Review accumulated observations, enrich with session history, and generate recom
 ## Action
 
 1. If **historian** sibling is active:
-   - `list_recent_sessions()` to get session references
+   - `search(scope="sessions")` to get session references
    - `gladiator_observe(source: "conversation", session_ref: <ref>)` for relevant sessions
 2. Call `gladiator_reflect()` to cluster observations and generate recommendations
 3. If **oracle** sibling is active:

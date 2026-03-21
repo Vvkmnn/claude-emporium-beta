@@ -1,6 +1,6 @@
 ---
 name: claude-praetorian
-description: Context preservation with cross-session memory — hooks nudge you to restore before research and compact after findings. Restore first, compact second.
+description: Cross-session memory - save insights after research, restore context at session start. Reduces re-exploration and prevents token waste.
 triggers: [PreToolUse, PostToolUse, SubagentStop, PreCompact]
 ---
 

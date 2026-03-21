@@ -1,19 +1,19 @@
 ---
 name: claude-historian
-description: Session history search — INVOKE before planning to check search_plans(), before web research, or after errors for past solutions
+description: Session history search — INVOKE before planning, before web research, after errors, or when looking for past conversation content. Use INSTEAD of manually grepping .jsonl session files.
 triggers: [PreToolUse, PostToolUseFailure]
 ---
 
 # Historian Plugin
 
-Session memory. Checks past sessions before redundant research, planning, or debugging.
+Session memory. Use INSTEAD of grepping .jsonl files manually. Checks past sessions before redundant research, planning, or debugging.
 
 ## Hooks
 
 | Hook | When | Action |
 |------|------|--------|
-| **PreToolUse(WebSearch/WebFetch)** | Before web research | Checks `find_similar_queries()` first |
-| **PostToolUseFailure(Bash/Edit)** | After tool errors | Suggests `get_error_solutions()` |
+| **PreToolUse(WebSearch/WebFetch)** | Before web research | Checks `search(scope="similar")` first |
+| **PostToolUseFailure(Bash/Edit)** | After tool errors | Suggests `search(scope="errors")` |
 
 ## Commands
 
@@ -21,61 +21,58 @@ Session memory. Checks past sessions before redundant research, planning, or deb
 |---------|-------------|
 | `/search-historian <query>` | Search past sessions for solutions, decisions, context |
 
+## MCP Tool: `search(query, scope)`
+
+One tool, many scopes:
+
+| Scope | What It Finds | When to Use |
+|-------|---------------|-------------|
+| `conversations` | Full-text across all sessions | General search |
+| `similar` | Related past questions | Before web research |
+| `errors` | How errors were previously fixed | After tool failures |
+| `plans` | Past implementation plans | Before planning |
+| `files` | File changes across sessions (needs `filepath`) | Before editing familiar files |
+| `tools` | Successful tool workflows | Before launching agents |
+| `sessions` | Recent work sessions | Browse history |
+| `config` | .claude rules, skills, agents | Config troubleshooting |
+| `tasks` | Task management data | Check past tasks |
+| `memories` | Saved memories | Cross-session memory |
+
+## MCP Tool: `inspect(session_id)`
+
+Deep summary of a specific session with key insights.
+
 ## Workflows
 
 ### Before Planning
 
-Check past plans before entering plan mode:
-
-1. `search_plans(query="feature or project name")` — find past approaches
-2. Review architectural decisions and rationale
-3. Use findings to avoid re-research
+```
+search(query="feature name", scope="plans")
+```
 
 ### Before Web Research
 
-The hook handles this automatically, but you can also invoke manually:
+```
+search(query="topic", scope="similar")
+```
+If found: use past results, skip web search.
 
-1. `find_similar_queries(query="query")` — check if already researched
-2. If found: use past results, skip web search
-3. If not: proceed with research
+### After Errors
 
-### Before Launching Agents
-
-Check past agent workflows for effective patterns:
-
-1. `find_tool_patterns()` — successful agent workflows
-2. Review what agent types and prompts worked well
-3. Use findings to craft better agent prompts
-
-### Error Resolution
-
-1. `get_error_solutions(query="error pattern")` — how was this fixed before?
-2. If found: apply the previous solution
-3. If not: proceed with normal debugging
+```
+search(query="error message", scope="errors")
+```
+If found: apply previous solution.
 
 ### General Search
 
-1. `search_conversations(query="query")` — full-text across all sessions
-2. `find_file_context(filepath="filename")` — track file changes across sessions
-3. `list_recent_sessions()` — browse recent work
-
-## MCP Tools Reference
-
-| Tool | Purpose |
-|------|---------|
-| `search_conversations` | Full-text search across session history |
-| `find_similar_queries` | Find related past questions (semantic) |
-| `get_error_solutions` | Find how errors were previously fixed |
-| `search_plans` | Find past implementation plans |
-| `find_file_context` | Track file changes across sessions |
-| `find_tool_patterns` | Discover successful tool workflows |
-| `list_recent_sessions` | Browse recent work sessions |
-| `inspect` | Deep summary of a specific session |
-| `search_config` | Search .claude rules, skills, agents |
-| `extract_compact_summary` | Extract compact summary from session |
-
-## Requires
-
 ```
-claude mcp add historian -- npx claude-historian-mcp
+search(query="topic", scope="conversations")
+search(scope="files", filepath="path/to/file")
+search(scope="sessions")
 ```
+
+## Sibling Synergy
+
+- **With praetorian**: historian gives raw session context, praetorian gives distilled insights. Check both.
+- **With gladiator**: historian finds past error solutions, gladiator records new ones.

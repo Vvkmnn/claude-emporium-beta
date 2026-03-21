@@ -20,4 +20,4 @@ Search past Claude sessions for solutions, decisions, and context.
 
 ## Action
 
-Call `mcp__claude-historian-mcp__search_conversations(query="<query>")`
+Call `mcp__plugin_claude-historian_historian__search(query="<query>", scope="conversations")`

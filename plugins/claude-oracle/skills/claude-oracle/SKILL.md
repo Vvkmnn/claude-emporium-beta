@@ -1,6 +1,6 @@
 ---
 name: claude-oracle
-description: Automatic tool discovery across 19 sources — INVOKE before planning to discover relevant skills, plugins, and MCP servers
+description: Automatic tool discovery across 19 sources — INVOKE before planning, before adding dependencies, or when looking for tools to discover relevant skills, plugins, and MCP servers
 triggers: []
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: claude-vigil
-description: File checkpoint and recovery — auto-quicksaves before destructive commands, INVOKE before implementing a plan or starting risky multi-file changes
+description: File checkpoint and recovery — auto-quicksaves before destructive commands, INVOKE before implementing a plan or starting risky multi-file changes. Also use when user asks to undo changes or compare current state to a prior checkpoint.
 triggers: [PreToolUse]
 ---
 

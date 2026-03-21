@@ -1,6 +1,6 @@
 ---
 name: claude-gladiator
-description: Continuous learning — hooks observe failures and prompt reflection, INVOKE after sessions with many errors or corrections
+description: Continuous learning — INVOKE after sessions with many errors or corrections to record patterns and improve rules, hooks, and skills
 triggers: [PostToolUseFailure, Stop]
 ---
 

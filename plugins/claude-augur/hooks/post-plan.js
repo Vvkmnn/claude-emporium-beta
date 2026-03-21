@@ -7,7 +7,7 @@
  * Token cost: ~20 on match, 0 on non-plan files.
  */
 
-const { readStdin, emit, loadSettings } = require('../lib/utils');
+const { readStdin, emit, loadSettings, hasSibling } = require('../lib/utils');
 
 const PLAN_PATTERN = /\.claude\/plans\/.*\.md$/;
 
@@ -21,8 +21,11 @@ const PLAN_PATTERN = /\.claude\/plans\/.*\.md$/;
   const filePath = data.tool_input?.file_path || '';
   if (!PLAN_PATTERN.test(filePath)) process.exit(0);
 
+  const praetorianNote = hasSibling('praetorian')
+    ? `\nThen compact key decisions: praetorian_compact(type="decisions", title="<plan-name>")`
+    : '';
   emit(
-    `\u{1f4d0} [claude-augur] Plan file updated. Surface your reasoning:\n\naugur_explain(plan_path: "${filePath}")`,
+    `\u{1f4d0} Plan file updated. Surface your reasoning:\n\naugur_explain(plan_path: "${filePath}")${praetorianNote}`,
     'PostToolUse'
   );
 })();
