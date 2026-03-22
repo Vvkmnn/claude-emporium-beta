@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 /**
- * Stop Hook — force compact at turn end
+ * Stop Hook — nudge compact at turn end
  *
  * Triggers: Stop(*)
- * Checks last_assistant_message for research/discovery keywords.
- * If found, BLOCKS Claude from stopping until it compacts findings.
- * Includes existing compaction titles so Claude can merge, not duplicate.
- * Silent exit on routine turns (~0ms overhead).
+ * Checks last_assistant_message for research findings.
+ * Uses systemMessage (not decision:block — that silently no-ops).
+ * Includes existing titles so Claude merges, not duplicates.
+ * Silent exit on routine turns.
  */
 
 const fs = require('fs');
@@ -15,7 +15,18 @@ const os = require('os');
 const { readStdin, loadSettings } = require('../lib/utils');
 
 const INDEX_PATH = path.join(os.homedir(), '.claude', 'praetorian', 'index.json');
-const RESEARCH_KEYWORDS = /\b(found|discovered|investigated|explored|researched|analyzed|learned|determined|confirmed|identified)\b/i;
+
+// Routine patterns — always skip these (false positives)
+const ROUTINE = [
+  /\bFound\s+\d+\s+(compaction|result|match|file|error|session)/i,
+  /returns\s+(exit\s+)?\d+\s+when.{0,30}found/i,
+  /^(Done|Pushed|Complete|Fixed|Updated|Committed|Built)\b/m,
+  /^All\s+\d+\s+\w+\s+(complete|done|finished|passing)/im,
+  /Everything.{0,20}(working|up.to.date|clean)/i,
+];
+
+// Require subject + research verb (not bare "found")
+const RESEARCH = /\b(I\s+(found|discovered|confirmed|identified|determined|investigated)|the\s+(audit|investigation|analysis|research|exploration)\s+(found|revealed|showed|identified|uncovered))\b/i;
 
 function getExistingTitles(cwd) {
   try {
@@ -36,16 +47,17 @@ function getExistingTitles(cwd) {
   if (data.stop_hook_active) process.exit(0);
 
   const msg = data.last_assistant_message || '';
-  if (msg.length < 50 || !RESEARCH_KEYWORDS.test(msg)) process.exit(0);
+  if (msg.length < 200) process.exit(0);
+  if (ROUTINE.some(p => p.test(msg))) process.exit(0);
+  if (!RESEARCH.test(msg)) process.exit(0);
   if (/praetorian_compact/i.test(msg)) process.exit(0);
 
   const titles = getExistingTitles(data.cwd || '');
   const titleHint = titles.length
-    ? ` Existing titles to merge into: ${titles.map(t => `"${t}"`).join(', ')}.`
+    ? ` Existing titles: ${titles.map(t => `"${t}"`).join(', ')}.`
     : '';
 
   console.log(JSON.stringify({
-    decision: 'block',
-    reason: `Save findings with praetorian_compact(type="task_result", title="<topic>").${titleHint} Reuse an existing title to merge, or create new only if topic is genuinely different.`,
+    systemMessage: `Save findings with praetorian_compact(type="task_result", title="<topic>").${titleHint} Reuse title to merge.`,
   }));
 })();
