@@ -16,7 +16,7 @@ Search across 19 sources for relevant skills, plugins, and MCP servers.
 
 ## Action
 
-Call `mcp__claude-oracle-mcp__search` with:
+Call `mcp__plugin_claude-oracle_oracle__oracle_search` with:
 - `query`: The search term
 - `type`: Optional filter - "skill", "plugin", "mcp", or "all" (default: "all")
 - `limit`: Max results (default: 5)
